@@ -2,10 +2,10 @@ import React, { PropTypes } from 'react'
 import CSSModules from 'browser/lib/CSSModules'
 import styles from './InfoPanel.styl'
 
-const InfoPanel = ({
-  storageName, folderName, noteLink, updatedAt, createdAt, exportAsMd, exportAsTxt, wordCount, letterCount, type
+const InfoPanelTrashed = ({
+  storageName, folderName, updatedAt, createdAt, exportAsMd, exportAsTxt
 }) => (
-  <div className='infoPanel' styleName='control-infoButton-panel' style={{display: 'none'}}>
+  <div className='infoPanel' styleName='control-infoButton-panel-trash' style={{display: 'none'}}>
     <div styleName='group-section'>
       <div styleName='group-section-label'>
         Storage
@@ -19,7 +19,7 @@ const InfoPanel = ({
         Folder
       </div>
       <div styleName='group-section-control'>
-        {folderName}
+        <text>Trash</text>{folderName}
       </div>
     </div>
     <div styleName='group-section'>
@@ -38,35 +38,6 @@ const InfoPanel = ({
         {updatedAt}
       </div>
     </div>
-    <div styleName='group-section'>
-      <div styleName='group-section-label'>
-        Note Link
-      </div>
-      <div styleName='group-section-control'>
-        <input value={noteLink} onClick={(e) => { e.target.select() }} />
-      </div>
-    </div>
-    {type === 'SNIPPET_NOTE'
-      ? ''
-      : <div>
-        <div styleName='group-section'>
-          <div styleName='group-section-label'>
-            Words
-          </div>
-          <div styleName='group-section-control'>
-            {wordCount}
-          </div>
-        </div>
-        <div styleName='group-section'>
-          <div styleName='group-section-label'>
-            Letters
-          </div>
-          <div styleName='group-section-control'>
-            {letterCount}
-          </div>
-        </div>
-      </div>
-    }
 
     <div id='export-wrap'>
       <button styleName='export--enable' onClick={(e) => exportAsMd(e)}>
@@ -87,17 +58,13 @@ const InfoPanel = ({
   </div>
 )
 
-InfoPanel.propTypes = {
+InfoPanelTrashed.propTypes = {
   storageName: PropTypes.string.isRequired,
   folderName: PropTypes.string.isRequired,
-  noteLink: PropTypes.string.isRequired,
   updatedAt: PropTypes.string.isRequired,
   createdAt: PropTypes.string.isRequired,
   exportAsMd: PropTypes.func.isRequired,
-  exportAsTxt: PropTypes.func.isRequired,
-  wordCount: PropTypes.number,
-  letterCount: PropTypes.number,
-  type: PropTypes.string.isRequired
+  exportAsTxt: PropTypes.func.isRequired
 }
 
-export default CSSModules(InfoPanel, styles)
+export default CSSModules(InfoPanelTrashed, styles)

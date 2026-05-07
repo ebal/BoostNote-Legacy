@@ -105,7 +105,8 @@ module.exports = function(grunt) {
   })
 
   grunt.registerTask('pack', function(platform) {
-    grunt.log.writeln(path.join(__dirname, 'dist'))
+    var outDir = process.env.PACK_OUT_DIR || path.join(__dirname, 'dist')
+    grunt.log.writeln(outDir)
     var done = this.async()
     var opts = {
       name: 'Boostnote',
@@ -114,10 +115,10 @@ module.exports = function(grunt) {
       version: grunt.config.get('pkg.config.electron-version'),
       'app-version': grunt.config.get('pkg.version'),
       'app-bundle-id': 'com.maisin.boost',
-      asar: false,
+      asar: process.env.USE_ASAR === 'true' || false,
       prune: true,
       overwrite: true,
-      out: path.join(__dirname, 'dist'),
+      out: outDir,
       ignore: /node_modules\/ace-builds\/(?!src-min)|node_modules\/ace-builds\/(?=src-min-noconflict)|node_modules\/devicon\/icons|^\/browser|^\/secret|\.babelrc|\.gitignore|^\/\.gitmodules|^\/gruntfile|^\/readme.md|^\/webpack|^\/appdmg\.json|^\/node_modules\/grunt/
     }
     switch (platform) {

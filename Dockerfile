@@ -19,7 +19,7 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 RUN npm install -g npm@6 && \
   git config --global url."https://".insteadOf git:// && \
-  yarn install --frozen-lockfile
+  yarn install
 
 COPY . .
 

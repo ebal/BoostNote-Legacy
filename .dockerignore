@@ -1,0 +1,11 @@
+node_modules
+compiled
+dist
+.git
+compiled/
+dist/
+*.dmg
+*.zip
+.DS_Store
+tests
+snap

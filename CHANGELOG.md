@@ -1,0 +1,53 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Common Changelog](https://common-changelog.org) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.16.3] - 2026-05-08
+
+### Fixed
+
+- Restore checkbox rendering in markdown preview after markdown-it upgrade to 12.x ([`85d6efc`](../../commit/85d6efc4)). The `state.parentType` API changed between markdown-it 6 and 12; detection now uses token-stack inspection instead.
+- Preserve `yarn.lock` resolved by `yarn install` across `COPY . .` in Docker build ([`1115f102`](../../commit/1115f102)).
+
+### Changed
+
+- Upgrade runtime and test dependencies to latest compatible versions ([`b77ad6bf`](../../commit/b77ad6bf), [`ce358e32`](../../commit/ce358e32)). Pins `fs-extra@^5`, `electron-packager@^12` and `cross-env@^5` due to engine constraints in the Webpack 1 / Node 8 build environment.
+- Update KaTeX snapshot for 0.16.x HTML output (`mathdefault` → `mathnormal`, rounded decimal values) ([`85d6efc`](../../commit/85d6efc4)).
+- Replace deprecated `ReactDOM.findDOMNode` with `React.createRef()` in `FolderItem` color-picker ([`85d6efc`](../../commit/85d6efc4)).
+- Document Webpack 1 `process` shim constraint in `AGENTS.md` ([`7db55cbe`](../../commit/7db55cbe)).
+
+### Removed
+
+- Remove **For Team (BoostHub)** menu entry and all related code ([`710c4ab8`](../../commit/710c4ab8)).
+
+## [0.16.2] - 2026-05-08
+
+### Fixed
+
+- Enable `nodeIntegration` and set `contextIsolation: false` in `BrowserWindow` for Electron 5 compatibility ([`c3da0b7a`](../../commit/c3da0b7a)).
+
+### Changed
+
+- Upgrade Electron from 1.x to **5.0.13** (Node.js 12.0.0, Chromium 73) ([`686953ab`](../../commit/686953ab)).
+- Rewrite `Dockerfile` with multi-stage build (`base` → `deps` → `build`) for reproducible lockfile handling ([`686953ab`](../../commit/686953ab)).
+- Rewrite `yarn.lock` resolved URLs from Taobao registry to npmjs.org ([`b77ad6bf`](../../commit/b77ad6bf)).
+
+## [0.16.1] - 2020-09-04
+
+### Fixed
+
+- Fix unwanted deletion of attachments ([`8958e67f`](../../commit/8958e67f)).
+- Fix Cancel button in update dialog ([`3e405e1a`](../../commit/3e405e1a)).
+- Fix Analytics save bug ([`2603dfc1`](../../commit/2603dfc1)).
+- Fix AutoUpdate not being auto-saved ([`2df59060`](../../commit/2df59060)).
+- Avoid conflicting styles between inline code and code blocks ([`58c4a78b`](../../commit/58c4a78b)).
+
+### Added
+
+- Add update menu item with download confirmation dialog ([`85d09b3b`](../../commit/85d09b3b), [`553832bd`](../../commit/553832bd)).
+
+[0.16.3]: ../../compare/v0.16.2...v0.16.3
+[0.16.2]: ../../compare/v0.16.1...v0.16.2
+[0.16.1]: ../../compare/v0.16.0...v0.16.1

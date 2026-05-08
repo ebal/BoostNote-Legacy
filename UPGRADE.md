@@ -18,9 +18,48 @@
 | 0.16.3 | 5.0.13 | 73.0.3683.121 | 12.0.0 | 7.3.492.27-electron.0 | stable |
 | 0.16.4 | 5.0.13 | 73.0.3683.121 | 12.0.0 | 7.3.492.27-electron.0 | stable |
 | 0.16.5 | 5.0.13 | 73.0.3683.121 | 12.0.0 | 7.3.492.27-electron.0 | stable |
-| 0.16.6 | 5.0.13 | 73.0.3683.121 | 12.0.0 | 7.3.492.27-electron.0 | current |
+| 0.16.6 | 5.0.13 | 73.0.3683.121 | 12.0.0 | 7.3.492.27-electron.0 | stable (intel branch) |
+| 0.16.7 | 11.5.0 | 87.0.4280.141 | 12.18.3 | 8.7 (arm64 branch) | current |
 
 ## Iterations
+
+### 0.16.6 to 0.16.7 — Electron 11, native arm64 darwin build
+
+Status: successful
+
+- **source version**: 0.16.6 (Electron 5.0.13, intel branch)
+- **target version**: 0.16.7 (Electron 11.5.0, arm64 branch)
+- **changed files**:
+  - `package.json` (electron 11.5.0, electron-packager 15.4.0, grunt 1.6.1, electron-debug 3.2.0, electron-devtools-installer 3.2.0, version bump to 0.16.7)
+  - `config.json` (electron-version 11.5.0)
+  - `gruntfile.js` (electron-packager v15 option renames; add osx-arm64 pack case)
+  - `lib/main-window.js` (enableRemoteModule: true)
+  - `Dockerfile.arm64` (rewritten: node:14-bullseye base, pack:osx-arm64 target)
+  - `browser/lib/confirmDeleteNote.js` (showMessageBoxSync)
+  - `browser/main/SideNav/StorageItem.js` (showMessageBoxSync x2, showOpenDialog Promise x2)
+  - `browser/main/SideNav/index.js` (showMessageBoxSync, showOpenDialog Promise)
+  - `browser/main/modals/RenameTagModal.js` (showMessageBoxSync)
+  - `browser/main/modals/PreferencesModal/StorageItem.js` (showMessageBoxSync)
+  - `browser/main/modals/PreferencesModal/StoragesTab.js` (showOpenDialog Promise)
+  - `browser/main/Detail/SnippetNoteDetail.js` (showMessageBoxSync)
+  - `browser/main/NoteList/index.js` (showMessageBoxSync, showSaveDialog Promise, showOpenDialog Promise)
+  - `browser/components/MarkdownPreview.js` (showSaveDialog Promise)
+  - `AGENTS.md`, `CHANGELOG.md`, `UPGRADE.md`
+- **build command**: `docker build --platform linux/arm64 --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) -f Dockerfile.arm64 -t boostnote-legacy-arm64 .`
+- **test command**: `docker run --platform linux/arm64 --rm boostnote-legacy-arm64 npm run test`
+- **verification result**: build clean; `file dist/Boostnote-darwin-arm64/Boostnote.app/Contents/MacOS/Boostnote` → `Mach-O 64-bit executable arm64`; AVA all passed; Jest real test files all passed
+- **known issues**: Jest picks up test files inside packaged `dist/Boostnote-darwin-arm64/...` — pre-existing issue, not introduced here; those tests fail with environment mismatch errors
+- **rollback commit**: `git revert HEAD` or `git checkout intel -- .`
+
+| Area | Change |
+|---|---|
+| Electron | 5.0.13 → 11.5.0 (enables native darwin/arm64 binary) |
+| electron-packager | 12 → 15.4.0 (arm64 darwin support in v15.2.0) |
+| grunt | 0.4.5 → 1.6.1 (Node 14 compatibility) |
+| Dockerfile.arm64 | Rewritten: debian:stretch + Node tarball → node:14-bullseye (official arm64 image) |
+| gruntfile.js | Updated electron-packager v15 API names; added osx-arm64 pack case (arch: arm64) |
+| main-window.js | Added enableRemoteModule: true (Electron 11 disables remote by default) |
+| Dialog API | 12 files: showMessageBox sync → showMessageBoxSync; showOpenDialog/showSaveDialog callback → Promise |
 
 ### 0.16.5 to 0.16.6 — remove dead BoostIO integrations and auto-update UI
 

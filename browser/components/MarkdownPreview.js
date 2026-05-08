@@ -212,8 +212,9 @@ class MarkdownPreview extends React.Component {
       properties: ['openFile', 'createDirectory']
     }
 
-    dialog.showSaveDialog(remote.getCurrentWindow(), options, filename => {
-      if (filename) {
+    dialog.showSaveDialog(remote.getCurrentWindow(), options).then(result => {
+      if (!result.canceled && result.filePath) {
+        const filename = result.filePath
         const storagePath = this.props.storagePath
 
         exportNote(storagePath, note, filename, contentFormatter)

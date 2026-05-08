@@ -1,6 +1,5 @@
 # Dockerfile.arm64 — build container runs natively on Apple Silicon (linux/arm64).
-# Output is still darwin/x64: Electron 5.0.13 has no arm64 darwin binaries.
-# The resulting .app runs on Apple Silicon via Rosetta 2.
+# Produces darwin/arm64 binary (Electron 11.5.0 has native arm64 darwin support).
 #
 # Build:
 #   docker build --platform linux/arm64 \
@@ -8,33 +7,24 @@
 #     -f Dockerfile.arm64 -t boostnote-legacy-arm64 .
 #
 # Export:
-#   docker cp $(docker create --rm boostnote-legacy-arm64):/app/dist/Boostnote-darwin-x64 ./dist/
+#   docker cp $(docker create --rm boostnote-legacy-arm64):/app/dist/Boostnote-darwin-arm64 ./dist/
 
-FROM --platform=linux/arm64 debian:stretch AS base
-
-# Debian Stretch is archived — redirect to archive mirrors
-RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
-  sed -i 's/security.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
-  sed -i '/stretch-updates/d' /etc/apt/sources.list && \
-  echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check-valid-until
+FROM --platform=linux/arm64 node:14-bullseye AS base
 
 RUN apt-get update && apt-get install -y \
-  curl \
-  git \
-  python \
+  python3 \
+  python-is-python3 \
   build-essential \
   fakeroot \
+  git \
   && rm -rf /var/lib/apt/lists/*
-
-# Node 8.17.0 arm64 — no official node:8 Docker image exists for arm64
-RUN curl -fsSL https://nodejs.org/dist/v8.17.0/node-v8.17.0-linux-arm64.tar.gz \
-  | tar -xz -C /usr/local --strip-components=1
 
 # ── deps stage: install node_modules and resolve yarn.lock ──────────────────
 FROM base AS deps
 WORKDIR /app
 COPY package.json yarn.lock ./
-RUN npm install -g npm@6 yarn grunt-cli@1.3.2 && \
+# node:14-bullseye ships yarn; skip reinstalling it to avoid symlink conflict
+RUN npm install -g npm@6 grunt-cli@1.3.2 && \
   git config --global url."https://".insteadOf git:// && \
   yarn install --ignore-engines
 
@@ -52,8 +42,8 @@ RUN npm run compile && \
   mkdir -p /build && \
   cp -a /app /build/app && \
   cd /build/app && \
-  PACK_OUT_DIR=/build/out grunt pack:osx && \
-  mkdir -p /app/dist && cp -r /build/out/Boostnote-darwin-x64 /app/dist/
+  PACK_OUT_DIR=/build/out grunt pack:osx-arm64 && \
+  mkdir -p /app/dist && cp -r /build/out/Boostnote-darwin-arm64 /app/dist/
 
-# Output: /app/dist/Boostnote-darwin-x64/Boostnote.app
+# Output: /app/dist/Boostnote-darwin-arm64/Boostnote.app
 CMD ["sh", "-c", "ls -la dist/"]

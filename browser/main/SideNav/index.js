@@ -65,12 +65,15 @@ class SideNav extends React.Component {
   }
 
   deleteTag(tag) {
-    const selectedButton = dialog.showMessageBox(remote.getCurrentWindow(), {
-      type: 'warning',
-      message: i18n.__('Confirm tag deletion'),
-      detail: i18n.__('This will permanently remove this tag.'),
-      buttons: [i18n.__('Confirm'), i18n.__('Cancel')]
-    })
+    const selectedButton = dialog.showMessageBoxSync(
+      remote.getCurrentWindow(),
+      {
+        type: 'warning',
+        message: i18n.__('Confirm tag deletion'),
+        detail: i18n.__('This will permanently remove this tag.'),
+        buttons: [i18n.__('Confirm'), i18n.__('Cancel')]
+      }
+    )
 
     if (selectedButton === 0) {
       const {
@@ -208,8 +211,9 @@ class SideNav extends React.Component {
       title: i18n.__('Select a folder to export the files to'),
       multiSelections: false
     }
-    dialog.showOpenDialog(remote.getCurrentWindow(), options, paths => {
-      if (paths && paths.length === 1) {
+    dialog.showOpenDialog(remote.getCurrentWindow(), options).then(result => {
+      if (!result.canceled && result.filePaths.length === 1) {
+        const paths = result.filePaths
         const { data, config } = this.props
         dataApi
           .exportTag(data, tag, fileType, paths[0], config)

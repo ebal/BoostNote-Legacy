@@ -68,6 +68,7 @@ This ensures the host `./dist/` always reflects the latest build.
 - **Docker-only build workflow** — UPGRADE.md mandates building only through Docker (Node 8.17, Debian Stretch). The `Dockerfile` handles the full compile + package pipeline.
 - **Immutable.js-lite** — Redux store uses `browser/lib/Mutable.js` wrapping `immutable` Map/Set, not plain JS objects.
 - **`locales/` directory** — i18n translations for multiple languages; loaded via `browser/lib/i18n.js`.
+- **Webpack 1 `process` shim** — Webpack 1 injects its own `process` polyfill into the renderer bundle. The shim has `process.versions = {}`, so `process.versions.node` is `undefined`. Any dependency that reads `process.versions.node` at module load time (e.g. `fs-extra@7+` with its `nodeSupportsBigInt()` check) will crash at runtime with `Cannot read property 'split' of undefined`. Cap such dependencies below the version that introduced the check, or ensure they are excluded from the webpack bundle entirely.
 
 ## Style
 

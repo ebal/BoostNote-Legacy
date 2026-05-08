@@ -24,9 +24,11 @@ RUN npm install -g npm@6 && \
 
 # ── build stage: compile and package ────────────────────────────────────────
 FROM deps AS build
+ARG GIT_COMMIT=unknown
 COPY . .
 # Restore yarn.lock resolved in deps stage (COPY . . overwrites with host version)
 COPY --from=deps /app/yarn.lock ./yarn.lock
+RUN echo "$GIT_COMMIT" > /app/commit-hash.txt
 
 # Compile webpack production build, then copy to staging for packaging
 # The staging copy avoids fs-extra overlayfs bug when electron-packager copies app dir

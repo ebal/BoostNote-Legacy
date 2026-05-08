@@ -14,7 +14,8 @@ class SnippetTab extends React.Component {
     }
   }
 
-  componentWillUpdate(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillUpdate(nextProps) {
     if (nextProps.snippet.name !== this.props.snippet.name) {
       this.setState({
         name: nextProps.snippet.name

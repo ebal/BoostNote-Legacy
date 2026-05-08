@@ -125,7 +125,8 @@ class NoteList extends React.Component {
     ee.on('list:navigate', this.navigate)
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.location.pathname !== this.props.location.pathname) {
       this.resetScroll()
     }

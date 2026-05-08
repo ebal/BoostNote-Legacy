@@ -7,5 +7,4 @@ dist/
 *.dmg
 *.zip
 .DS_Store
-tests
 snap

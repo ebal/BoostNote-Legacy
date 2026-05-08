@@ -19,14 +19,14 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 RUN npm install -g npm@6 && \
   git config --global url."https://".insteadOf git:// && \
-  yarn install
+  yarn install && \
+  yarn global add grunt-cli@1.3.2
 
 COPY . .
 
 # Compile webpack production build, then copy to staging for packaging
 # The staging copy avoids fs-extra overlayfs bug when electron-packager copies app dir
-RUN yarn global add grunt-cli@1.3.2 && \
-  npm run compile && \
+RUN npm run compile && \
   mkdir -p /build && \
   cp -a /app /build/app && \
   cd /build/app && \

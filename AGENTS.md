@@ -9,7 +9,7 @@ The only host commands allowed are `git`, `docker`, `codesign` (for exported .ap
 
 ## What this is
 
-Legacy desktop note-taking app for programmers. Built with **Electron 5**, **React 16 + Redux**, **Webpack 1**, **Babel 6**, **Stylus (CSS Modules)**, and **CodeMirror**. This is a deprecated codebase; the successor is BoostNote-App.
+Legacy desktop note-taking app for programmers. Built with **Electron 11** (arm64 branch; Electron 5 on intel branch), **React 16 + Redux**, **Webpack 1**, **Babel 6**, **Stylus (CSS Modules)**, and **CodeMirror**. This is a deprecated codebase; the successor is BoostNote-App.
 
 ## Architecture
 
@@ -40,7 +40,7 @@ Legacy desktop note-taking app for programmers. Built with **Electron 5**, **Rea
 
 ## Apple Silicon build (arm64 branch)
 
-`Dockerfile.arm64` runs the build container natively on Apple Silicon. Output is still `darwin/x64` — Electron 5 has no arm64 darwin binaries; the packaged `.app` runs on Apple Silicon via Rosetta 2.
+`Dockerfile.arm64` runs the build container natively on Apple Silicon (linux/arm64) using `node:14-bullseye`. Produces a native `darwin/arm64` binary — Electron 11.5.0 has native arm64 darwin support.
 
 ```bash
 docker build --platform linux/arm64 \
@@ -51,7 +51,7 @@ docker build --platform linux/arm64 \
 Export after build:
 
 ```bash
-docker cp $(docker create --rm boostnote-legacy-arm64):/app/dist/Boostnote-darwin-x64 ./dist/
+docker cp $(docker create --rm boostnote-legacy-arm64):/app/dist/Boostnote-darwin-arm64 ./dist/
 ```
 
 Tests:
@@ -85,7 +85,9 @@ This ensures the host `./dist/` always reflects the latest build.
 - **Webpack aliases**: `lib` resolves to `./lib`, `browser` resolves to `./browser`. Used in imports throughout.
 - **CSS Modules** via `react-css-modules` and Stylus. Class names pattern: `[name]__[local]___[path]`.
 - **`secret/auth_code.json`** is required for code signing. Absent in dev — codesign tasks silently skip.
-- **Electron 5.0.13** is pinned in `config.electron-version` and `devDependencies`.
+- **Electron 11.5.0** is pinned in `config.electron-version` and `devDependencies` (arm64 branch). Intel branch uses Electron 5.0.13.
+- **`enableRemoteModule: true`** required in BrowserWindow webPreferences — Electron 11 disables `remote` module by default.
+- **Dialog API**: `showMessageBox`/`showOpenDialog`/`showSaveDialog` with sync return-value usage migrated to `showMessageBoxSync`; callback forms migrated to Promise (Electron 9+ removed callback/sync API).
 - **HMR requires manual refresh** when editing constructors or adding new CSS classes (they're registered at construction time).
 - **Husky pre-commit hook** runs `npm run lint`.
 - **Stylus** uses `nib` for mixins; global styles imported via `browser/styles/index.styl`.

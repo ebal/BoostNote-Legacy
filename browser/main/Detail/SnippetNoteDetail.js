@@ -364,12 +364,15 @@ class SnippetNoteDetail extends React.Component {
   handleTabDeleteButtonClick(e, index) {
     if (this.state.note.snippets.length > 1) {
       if (this.state.note.snippets[index].content.trim().length > 0) {
-        const dialogIndex = dialog.showMessageBox(remote.getCurrentWindow(), {
-          type: 'warning',
-          message: i18n.__('Delete a snippet'),
-          detail: i18n.__('This work cannot be undone.'),
-          buttons: [i18n.__('Confirm'), i18n.__('Cancel')]
-        })
+        const dialogIndex = dialog.showMessageBoxSync(
+          remote.getCurrentWindow(),
+          {
+            type: 'warning',
+            message: i18n.__('Delete a snippet'),
+            detail: i18n.__('This work cannot be undone.'),
+            buttons: [i18n.__('Confirm'), i18n.__('Cancel')]
+          }
+        )
         if (dialogIndex === 0) {
           this.deleteSnippetByIndex(index)
         }

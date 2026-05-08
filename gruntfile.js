@@ -112,9 +112,9 @@ module.exports = function(grunt) {
       name: 'Boostnote',
       arch: 'x64',
       dir: __dirname,
-      version: grunt.config.get('pkg.config.electron-version'),
-      'app-version': grunt.config.get('pkg.version'),
-      'app-bundle-id': 'com.maisin.boost',
+      electronVersion: grunt.config.get('pkg.config.electron-version'),
+      appVersion: grunt.config.get('pkg.version'),
+      appBundleId: 'com.maisin.boost',
       asar: process.env.USE_ASAR === 'true',
       prune: true,
       overwrite: true,
@@ -126,7 +126,7 @@ module.exports = function(grunt) {
         Object.assign(opts, {
           platform: 'win32',
           icon: path.join(__dirname, 'resources/app.ico'),
-          'version-string': {
+          win32metadata: {
             CompanyName: 'MAISIN&CO., Inc.',
             LegalCopyright: '© 2015 MAISIN&CO., Inc. All rights reserved.',
             FileDescription: 'Boostnote',
@@ -149,9 +149,24 @@ module.exports = function(grunt) {
       case 'osx':
         Object.assign(opts, {
           platform: 'darwin',
-          darwinDarkModeSupport: true,
           icon: path.join(__dirname, 'resources/app.icns'),
-          'app-category-type': 'public.app-category.developer-tools'
+          appCategoryType: 'public.app-category.developer-tools'
+        })
+        packager(opts, function(err, appPath) {
+          if (err) {
+            grunt.log.writeln(err)
+            done(err)
+            return
+          }
+          done()
+        })
+        break
+      case 'osx-arm64':
+        Object.assign(opts, {
+          arch: 'arm64',
+          platform: 'darwin',
+          icon: path.join(__dirname, 'resources/app.icns'),
+          appCategoryType: 'public.app-category.developer-tools'
         })
         packager(opts, function(err, appPath) {
           if (err) {
@@ -166,7 +181,7 @@ module.exports = function(grunt) {
         Object.assign(opts, {
           platform: 'linux',
           icon: path.join(__dirname, 'resources/app.icns'),
-          'app-category-type': 'public.app-category.developer-tools'
+          appCategoryType: 'public.app-category.developer-tools'
         })
         packager(opts, function(err, appPath) {
           if (err) {

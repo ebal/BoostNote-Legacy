@@ -644,8 +644,9 @@ class NoteList extends React.Component {
       properties: ['openFile', 'createDirectory']
     }
 
-    dialog.showSaveDialog(remote.getCurrentWindow(), options, filename => {
-      if (filename) {
+    dialog.showSaveDialog(remote.getCurrentWindow(), options).then(result => {
+      if (!result.canceled && result.filePath) {
+        const filename = result.filePath
         const { config } = this.props
 
         dataApi
@@ -1037,7 +1038,7 @@ class NoteList extends React.Component {
   }
 
   confirmPublish(note) {
-    const buttonIndex = dialog.showMessageBox(remote.getCurrentWindow(), {
+    const buttonIndex = dialog.showMessageBoxSync(remote.getCurrentWindow(), {
       type: 'warning',
       message: i18n.__('Publish Succeeded'),
       detail: `${note.title} is published at ${note.blog.blogLink}`,
@@ -1060,8 +1061,10 @@ class NoteList extends React.Component {
       properties: ['openFile', 'multiSelections']
     }
 
-    dialog.showOpenDialog(remote.getCurrentWindow(), options, filepaths => {
-      this.addNotesFromFiles(filepaths)
+    dialog.showOpenDialog(remote.getCurrentWindow(), options).then(result => {
+      if (!result.canceled) {
+        this.addNotesFromFiles(result.filePaths)
+      }
     })
   }
 

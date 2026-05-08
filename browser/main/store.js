@@ -386,20 +386,6 @@ function config(state = defaultConfig, action) {
   return state
 }
 
-const defaultStatus = {
-  updateReady: false
-}
-
-function status(state = defaultStatus, action) {
-  switch (action.type) {
-    case 'UPDATE_AVAILABLE':
-      return Object.assign({}, defaultStatus, {
-        updateReady: true
-      })
-  }
-  return state
-}
-
 function updateStarredChange(oldNote, note, state, uniqueKey) {
   if (oldNote == null || oldNote.isStarred !== note.isStarred) {
     state.starredSet = new Set(state.starredSet)
@@ -472,7 +458,6 @@ const history = createHistory()
 const reducer = combineReducers({
   data,
   config,
-  status,
   router: connectRouter(history)
 })
 

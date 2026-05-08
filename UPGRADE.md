@@ -17,9 +17,47 @@
 | 0.16.2 | 5.0.13 | 73.0.3683.121 | 12.0.0 | 7.3.492.27-electron.0 | stable |
 | 0.16.3 | 5.0.13 | 73.0.3683.121 | 12.0.0 | 7.3.492.27-electron.0 | stable |
 | 0.16.4 | 5.0.13 | 73.0.3683.121 | 12.0.0 | 7.3.492.27-electron.0 | stable |
-| 0.16.5 | 5.0.13 | 73.0.3683.121 | 12.0.0 | 7.3.492.27-electron.0 | current |
+| 0.16.5 | 5.0.13 | 73.0.3683.121 | 12.0.0 | 7.3.492.27-electron.0 | stable |
+| 0.16.6 | 5.0.13 | 73.0.3683.121 | 12.0.0 | 7.3.492.27-electron.0 | current |
 
 ## Iterations
+
+### 0.16.5 to 0.16.6 — remove dead BoostIO integrations and auto-update UI
+
+Status: successful
+
+- **source version**: 0.16.5 (Electron 5.0.13)
+- **target version**: 0.16.6 (Electron 5.0.13 — no Electron change)
+- **changed files**:
+  - `browser/main/index.js`
+  - `browser/main/Main.js`
+  - `browser/main/StatusBar/index.js`
+  - `browser/main/store.js`
+  - `browser/main/lib/ConfigManager.js`
+  - `browser/main/modals/PreferencesModal/index.js`
+  - `browser/main/modals/PreferencesModal/InfoTab.js`
+  - `browser/main/modals/PreferencesModal/Crowdfunding.js` (deleted)
+  - `browser/main/modals/PreferencesModal/Crowdfunding.styl` (deleted)
+  - `browser/components/RealtimeNotification.js` (deleted)
+  - `browser/components/RealtimeNotification.styl` (deleted)
+  - `lib/main-menu.js`
+  - `package.json`
+  - `CHANGELOG.md`
+- **build command**: `docker build --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) -t boostnote-legacy .`
+- **test command**: `docker run --rm boostnote-legacy npm run test` (AVA + Jest)
+- **verification result**: build clean; host lint 0 errors 0 warnings; pre-existing test failures unchanged
+- **known issues**: same pre-existing Jest failures as 0.16.5
+- **rollback commit**: `git revert HEAD`
+
+| Area | Change |
+|---|---|
+| Auto-update UI | Removed `updateApp`/`downloadUpdate` functions, all `ipcRenderer.on` update handlers, `StatusBar` update button, `update` eventEmitter listener, `status` Redux reducer |
+| RealtimeNotification | Deleted component — fetched BoostIO marketing banners from GitHub at runtime |
+| Crowdfunding tab | Deleted component and tab — dead IssueHunt links |
+| InfoTab | Rewritten — newsletter form, auto-update checkbox, dead community links all removed |
+| ConfigManager | Removed `amaEnabled`, `autoUpdateEnabled` defaults; removed `electron-config` dependency read/write |
+| Welcome note | Replaced BoostIO marketing wall with minimal keyboard-shortcut table |
+| Help menu | Removed dead entries: Boostnote site, Wiki, Changelog (boost-releases) |
 
 ### 0.16.4 to 0.16.5 — full analytics removal
 

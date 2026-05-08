@@ -17,7 +17,6 @@ import { getLocales } from 'browser/lib/Languages'
 import applyShortcuts from 'browser/main/lib/shortcutManager'
 import { chooseTheme, applyTheme } from 'browser/main/lib/ThemeManager'
 import { push } from 'connected-react-router'
-import { ipcRenderer } from 'electron'
 
 const path = require('path')
 const electron = require('electron')
@@ -43,10 +42,9 @@ class Main extends React.Component {
   }
 
   getChildContext() {
-    const { status, config } = this.props
+    const { config } = this.props
 
     return {
-      status,
       config
     }
   }
@@ -120,7 +118,7 @@ class Main extends React.Component {
             folder: data.storage.folders[0].key,
             title: 'Welcome to Boostnote!',
             content:
-              '# Welcome to Boostnote!\n## Click here to edit markdown :wave:\n\n<iframe width="560" height="315" src="https://www.youtube.com/embed/L0qNPLsvmyM" frameborder="0" allowfullscreen></iframe>\n\n## Docs :memo:\n- [Boostnote | Boost your happiness, productivity and creativity.](https://hackernoon.com/boostnote-boost-your-happiness-productivity-and-creativity-315034efeebe)\n- [Cloud Syncing & Backups](https://github.com/BoostIO/Boostnote/wiki/Cloud-Syncing-and-Backup)\n- [How to sync your data across Desktop and Mobile apps](https://github.com/BoostIO/Boostnote/wiki/Sync-Data-Across-Desktop-and-Mobile-apps)\n- [Convert data from **Evernote** to Boostnote.](https://github.com/BoostIO/Boostnote/wiki/Evernote)\n- [Keyboard Shortcuts](https://github.com/BoostIO/Boostnote/wiki/Keyboard-Shortcuts)\n- [Keymaps in Editor mode](https://github.com/BoostIO/Boostnote/wiki/Keymaps-in-Editor-mode)\n- [How to set syntax highlight in Snippet note](https://github.com/BoostIO/Boostnote/wiki/Syntax-Highlighting)\n\n---\n\n## Article Archive :books:\n- [Reddit English](http://bit.ly/2mOJPu7)\n- [Reddit Spanish](https://www.reddit.com/r/boostnote_es/)\n- [Reddit Chinese](https://www.reddit.com/r/boostnote_cn/)\n- [Reddit Japanese](https://www.reddit.com/r/boostnote_jp/)\n\n---\n\n## Community :beers:\n- [GitHub](http://bit.ly/2AWWzkD)\n- [Twitter](http://bit.ly/2z8BUJZ)\n- [Facebook Group](http://bit.ly/2jcca8t)'
+              '# Welcome to Boostnote!\n\nA note-taking app for programmers.\n\n## Tips\n\n- **Markdown notes** support GFM, KaTeX math, and syntax highlighting.\n- **Snippet notes** store multiple code snippets in a single note.\n- Use the sidebar to organize notes into folders and tags.\n- `Ctrl+N` / `Cmd+N` — new note.\n- `Ctrl+,` / `Cmd+,` — open preferences.\n\n## Keyboard shortcuts\n\n| Action | Mac | Linux / Win |\n|---|---|---|\n| New note | `Cmd+N` | `Ctrl+N` |\n| Search | `Cmd+F` | `Ctrl+F` |\n| Toggle sidebar | `Cmd+\\` | `Ctrl+\\` |\n| Delete note | `Cmd+Shift+Backspace` | `Ctrl+Shift+Backspace` |'
           })
           .then(note => {
             store.dispatch({
@@ -180,7 +178,6 @@ class Main extends React.Component {
       this.toggleMenuBarVisible.bind(this)
     )
     eventEmitter.on('dispatch:push', this.changeRoutePush.bind(this))
-    eventEmitter.on('update', () => ipcRenderer.send('update-check', 'manual'))
   }
 
   componentWillUnmount() {
@@ -410,9 +407,6 @@ class Main extends React.Component {
 }
 
 Main.childContextTypes = {
-  status: PropTypes.shape({
-    updateReady: PropTypes.bool.isRequired
-  }).isRequired,
   config: PropTypes.shape({}).isRequired
 }
 

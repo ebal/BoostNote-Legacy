@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import HotkeyTab from './HotkeyTab'
 import UiTab from './UiTab'
 import InfoTab from './InfoTab'
-import Crowdfunding from './Crowdfunding'
 import StoragesTab from './StoragesTab'
 import ExportTab from './ExportTab'
 import SnippetTab from './SnippetTab'
@@ -13,7 +12,6 @@ import Blog from './Blog'
 import ModalEscButton from 'browser/components/ModalEscButton'
 import CSSModules from 'browser/lib/CSSModules'
 import styles from './PreferencesModal.styl'
-import RealtimeNotification from 'browser/components/RealtimeNotification'
 import _ from 'lodash'
 import i18n from 'browser/lib/i18n'
 
@@ -73,8 +71,6 @@ class Preferences extends React.Component {
             haveToSave={alert => this.setState({ UIAlert: alert })}
           />
         )
-      case 'CROWDFUNDING':
-        return <Crowdfunding />
       case 'BLOG':
         return (
           <Blog
@@ -140,7 +136,6 @@ class Preferences extends React.Component {
       },
       { target: 'UI', label: i18n.__('Interface'), UI: this.state.UIAlert },
       { target: 'INFO', label: i18n.__('About') },
-      { target: 'CROWDFUNDING', label: i18n.__('Crowdfunding') },
       { target: 'BLOG', label: i18n.__('Blog'), Blog: this.state.BlogAlert },
       {
         target: 'EXPORT',
@@ -186,7 +181,6 @@ class Preferences extends React.Component {
         <div ref='content' styleName='content'>
           {content}
         </div>
-        <RealtimeNotification />
       </div>
     )
   }

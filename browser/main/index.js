@@ -172,12 +172,5 @@ ReactDOM.render(
         body: msg
       })
     })
-
-    ipcRenderer.send('update-check', 'check-update')
-    window.addEventListener('online', function() {
-      if (!store.getState().status.updateReady) {
-        ipcRenderer.send('update-check', 'check-update')
-      }
-    })
   }
 )

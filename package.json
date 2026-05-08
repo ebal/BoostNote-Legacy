@@ -64,7 +64,6 @@
     "command-exists": "^1.2.9",
     "connected-react-router": "^6.9.3",
     "electron-config": "^1.0.0",
-    "electron-gh-releases": "^2.0.4",
     "escape-string-regexp": "^1.0.5",
     "file-uri-to-path": "^1.0.0",
     "file-url": "^2.0.2",

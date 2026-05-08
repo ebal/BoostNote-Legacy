@@ -1,6 +1,5 @@
 import dataApi from 'browser/main/lib/dataApi'
 import ee from 'browser/main/lib/eventEmitter'
-import AwsMobileAnalyticsConfig from 'browser/main/lib/AwsMobileAnalyticsConfig'
 import queryString from 'query-string'
 import { push } from 'connected-react-router'
 
@@ -12,9 +11,6 @@ export function createMarkdownNote(
   params,
   config
 ) {
-  AwsMobileAnalyticsConfig.recordDynamicCustomEvent('ADD_MARKDOWN')
-  AwsMobileAnalyticsConfig.recordDynamicCustomEvent('ADD_ALLNOTE')
-
   let tags = []
   if (
     config.ui.tagNewNoteWithFilteringTags &&
@@ -58,9 +54,6 @@ export function createSnippetNote(
   params,
   config
 ) {
-  AwsMobileAnalyticsConfig.recordDynamicCustomEvent('ADD_SNIPPET')
-  AwsMobileAnalyticsConfig.recordDynamicCustomEvent('ADD_ALLNOTE')
-
   let tags = []
   if (
     config.ui.tagNewNoteWithFilteringTags &&

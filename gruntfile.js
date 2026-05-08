@@ -115,7 +115,7 @@ module.exports = function(grunt) {
       version: grunt.config.get('pkg.config.electron-version'),
       'app-version': grunt.config.get('pkg.version'),
       'app-bundle-id': 'com.maisin.boost',
-      asar: process.env.USE_ASAR === 'true' || false,
+      asar: process.env.USE_ASAR === 'true',
       prune: true,
       overwrite: true,
       out: outDir,

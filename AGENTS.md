@@ -27,6 +27,7 @@ Legacy desktop note-taking app for programmers. Built with **Electron 5**, **Rea
 
 | Container command | Host equivalent (DO NOT RUN) |
 |---|---|
+| `docker build --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) -t boostnote-legacy .` | *(build)* |
 | `docker run --rm boostnote-legacy npm run test` | `npm run test` |
 | `docker run --rm boostnote-legacy npm run lint` | `npm run lint` |
 | `docker run --rm boostnote-legacy npm run ava` | `npm run ava` |
@@ -34,6 +35,8 @@ Legacy desktop note-taking app for programmers. Built with **Electron 5**, **Rea
 | `docker run --rm boostnote-legacy npm run compile` | `npm run compile` |
 | `docker cp <container>:/app/dist ./dist/` | `grunt pre-build` |
 | `codesign --deep --force --sign - <app>` | `grunt build` (codesign step) |
+
+> **Note:** Always pass `--build-arg GIT_COMMIT=$(git rev-parse --short HEAD)` when building. Without it the About dialog shows `unknown` as the commit hash.
 
 ## Export after every build
 

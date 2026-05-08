@@ -55,6 +55,19 @@ Summary of changes:
 | Lint | Removed unused `EOL` and `title` variables from `markdown-toc-generator.test.js` |
 | Docs | Added `CHANGELOG.md` (Common Changelog format); documented Webpack 1 `process` shim constraint in `AGENTS.md` |
 
+### Post-0.16.3 improvements (unreleased)
+
+Status: in-progress
+
+| Area | Change |
+|---|---|
+| Auto-update | Removed `electron-gh-releases` and all updater code; manual Update menu responds "disabled" |
+| About dialog | Git commit hash injected via `--build-arg GIT_COMMIT` at Docker build time; shown as `Version: 0.16.3 (abcd1234)` |
+| Build command | Now requires `docker build --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) -t boostnote-legacy .` |
+| `modal.js` | `ReactDOM.render()` return value replaced with `React.createRef()` (`react/no-render-return-value`) |
+| Lifecycle methods | `componentWillReceiveProps`/`componentWillUpdate` renamed to `UNSAFE_*` in 4 files (`react/no-deprecated`) |
+| `formatHTML.js` | Added `/* global _ */` — lodash is a runtime global, not a bundle import (`no-undef`) |
+
 ---
 
 ### Electron 4.2.12 to 5.0.13

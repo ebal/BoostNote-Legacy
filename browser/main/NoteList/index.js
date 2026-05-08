@@ -16,7 +16,6 @@ import fs from 'fs'
 import path from 'path'
 import { push, replace } from 'connected-react-router'
 import copy from 'copy-to-clipboard'
-import AwsMobileAnalyticsConfig from 'browser/main/lib/AwsMobileAnalyticsConfig'
 import Markdown from '../../lib/markdown'
 import i18n from 'browser/lib/i18n'
 import { confirmDeleteNote } from 'browser/lib/confirmDeleteNote'
@@ -877,7 +876,6 @@ class NoteList extends React.Component {
               note: newNote
             })
           })
-          AwsMobileAnalyticsConfig.recordDynamicCustomEvent('EDIT_NOTE')
         })
         .then(() => ee.emit('list:next'))
         .catch(err => {
@@ -894,11 +892,7 @@ class NoteList extends React.Component {
     const notes = this.notes.map(note => Object.assign({}, note))
     const selectedNotes = findNotesByKeys(notes, selectedNoteKeys)
     const firstNote = selectedNotes[0]
-    const eventName =
-      firstNote.type === 'MARKDOWN_NOTE' ? 'ADD_MARKDOWN' : 'ADD_SNIPPET'
 
-    AwsMobileAnalyticsConfig.recordDynamicCustomEvent(eventName)
-    AwsMobileAnalyticsConfig.recordDynamicCustomEvent('ADD_ALLNOTE')
     dataApi
       .createNote(storage.key, {
         type: firstNote.type,

@@ -2,9 +2,6 @@ import React from 'react'
 import CSSModules from 'browser/lib/CSSModules'
 import styles from './InfoTab.styl'
 import ConfigManager from 'browser/main/lib/ConfigManager'
-import { store } from 'browser/main/store'
-import AwsMobileAnalyticsConfig from 'browser/main/lib/AwsMobileAnalyticsConfig'
-import _ from 'lodash'
 import i18n from 'browser/lib/i18n'
 
 const electron = require('electron')
@@ -24,9 +21,9 @@ class InfoTab extends React.Component {
   }
 
   componentDidMount() {
-    const { autoUpdateEnabled, amaEnabled } = ConfigManager.get()
+    const { autoUpdateEnabled } = ConfigManager.get()
 
-    this.setState({ config: { autoUpdateEnabled, amaEnabled } })
+    this.setState({ config: { autoUpdateEnabled } })
   }
 
   handleLinkClick(e) {
@@ -36,7 +33,6 @@ class InfoTab extends React.Component {
 
   handleConfigChange(e) {
     const newConfig = {
-      amaEnabled: this.refs.amaEnabled.checked,
       autoUpdateEnabled: this.refs.autoUpdateEnabled.checked
     }
 
@@ -84,39 +80,6 @@ class InfoTab extends React.Component {
     this.setState({
       subscriptionFormEmail: e.target.value
     })
-  }
-
-  handleSaveButtonClick(e) {
-    const newConfig = this.state.config
-
-    if (!newConfig.amaEnabled) {
-      AwsMobileAnalyticsConfig.recordDynamicCustomEvent('DISABLE_AMA')
-      this.setState({
-        amaMessage: i18n.__('We hope we will gain your trust')
-      })
-    } else {
-      this.setState({
-        amaMessage: i18n.__("Thank's for trusting us")
-      })
-    }
-
-    _.debounce(() => {
-      this.setState({
-        amaMessage: ''
-      })
-    }, 3000)()
-
-    ConfigManager.set(newConfig)
-
-    store.dispatch({
-      type: 'SET_CONFIG',
-      config: newConfig
-    })
-  }
-
-  infoMessage() {
-    const { amaMessage } = this.state
-    return amaMessage ? <p styleName='policy-confirm'>{amaMessage}</p> : null
   }
 
   handleAutoUpdateChange() {
@@ -272,43 +235,6 @@ class InfoTab extends React.Component {
             {i18n.__('Enable Auto Update')}
           </label>
         </div>
-
-        <hr styleName='separate-line' />
-
-        <div styleName='group-header2--sub'>{i18n.__('Analytics')}</div>
-        <div>
-          {i18n.__(
-            'Boostnote collects anonymous data for the sole purpose of improving the application, and strictly does not collect any personal information such the contents of your notes.'
-          )}
-        </div>
-        <div>
-          {i18n.__('You can see how it works on ')}
-          <a
-            href='https://github.com/BoostIO/Boostnote'
-            onClick={e => this.handleLinkClick(e)}
-          >
-            GitHub
-          </a>
-          .
-        </div>
-        <br />
-        <div>{i18n.__('You can choose to enable or disable this option.')}</div>
-        <input
-          onChange={e => this.handleConfigChange(e)}
-          checked={this.state.config.amaEnabled}
-          ref='amaEnabled'
-          type='checkbox'
-        />
-        {i18n.__('Enable analytics to help improve Boostnote')}
-        <br />
-        <button
-          styleName='policy-submit'
-          onClick={e => this.handleSaveButtonClick(e)}
-        >
-          {i18n.__('Save')}
-        </button>
-        <br />
-        {this.infoMessage()}
       </div>
     )
   }

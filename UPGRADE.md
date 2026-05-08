@@ -16,9 +16,41 @@
 | 0.16.1 | 4.2.12 | 69.0.3497.128 | 10.11.0 | 6.9.427.31-electron.0 | baseline |
 | 0.16.2 | 5.0.13 | 73.0.3683.121 | 12.0.0 | 7.3.492.27-electron.0 | stable |
 | 0.16.3 | 5.0.13 | 73.0.3683.121 | 12.0.0 | 7.3.492.27-electron.0 | stable |
-| 0.16.4 | 5.0.13 | 73.0.3683.121 | 12.0.0 | 7.3.492.27-electron.0 | current |
+| 0.16.4 | 5.0.13 | 73.0.3683.121 | 12.0.0 | 7.3.492.27-electron.0 | stable |
+| 0.16.5 | 5.0.13 | 73.0.3683.121 | 12.0.0 | 7.3.492.27-electron.0 | current |
 
 ## Iterations
+
+### 0.16.4 to 0.16.5 — full analytics removal
+
+Status: successful
+
+- **source version**: 0.16.4 (Electron 5.0.13)
+- **target version**: 0.16.5 (Electron 5.0.13 — no Electron change)
+- **changed files**:
+  - `browser/lib/newNote.js`
+  - `browser/main/Main.js`
+  - `browser/main/modals/CreateFolderModal.js`
+  - `browser/main/modals/PreferencesModal/InfoTab.js`
+  - `browser/main/Detail/TagSelect.js`
+  - `browser/main/Detail/SnippetNoteDetail.js`
+  - `browser/main/Detail/MarkdownNoteDetail.js`
+  - `browser/main/NoteList/index.js`
+  - `browser/main/lib/AwsMobileAnalyticsConfig.js` (deleted)
+  - `package.json`
+  - `yarn.lock`
+  - `CHANGELOG.md`
+- **build command**: `docker build --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) -t boostnote-legacy .`
+- **test command**: `docker run --rm boostnote-legacy npm run test` (AVA + Jest)
+- **verification result**: build clean; host lint 0 errors; pre-existing test failures unchanged
+- **known issues**: same pre-existing Jest failures as 0.16.4 (`createNote`, `deleteFolder`, dist-packaged suite timeouts)
+- **rollback commit**: `git revert HEAD`
+
+| Area | Change |
+|---|---|
+| Analytics | Deleted `AwsMobileAnalyticsConfig.js`; removed import + all call sites from 8 files |
+| `InfoTab.js` | Removed `amaEnabled` state, checkbox UI, Save button, `infoMessage()` method, `handleSaveButtonClick()`; simplified `handleConfigChange()` to `autoUpdateEnabled` only |
+| Dependencies | Removed `aws-sdk` and `aws-sdk-mobile-analytics` from `package.json`; yarn.lock rebuilt |
 
 ### 0.16.2 to 0.16.3 — dep upgrades, bug fixes, cleanup
 

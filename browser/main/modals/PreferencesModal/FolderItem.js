@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import CSSModules from 'browser/lib/CSSModules'
-import ReactDOM from 'react-dom'
 import styles from './FolderItem.styl'
 import dataApi from 'browser/main/lib/dataApi'
 import { store } from 'browser/main/store'
@@ -22,6 +21,7 @@ class FolderItem extends React.Component {
         name: props.name
       }
     }
+    this.colorPickerRef = React.createRef()
   }
 
   handleEditChange(e) {
@@ -64,7 +64,7 @@ class FolderItem extends React.Component {
       // After the color picker has been painted, re-calculate its position
       // by comparing its dimensions to the host dimensions.
       const { hostBoundingBox } = this.props
-      const colorPickerNode = ReactDOM.findDOMNode(this.refs.colorPicker)
+      const colorPickerNode = this.colorPickerRef.current
       const colorPickerBox = colorPickerNode.getBoundingClientRect()
       const offsetTop = hostBoundingBox.bottom - colorPickerBox.bottom
       const folder = Object.assign({}, this.state.folder, {
@@ -144,9 +144,8 @@ class FolderItem extends React.Component {
                   style={cover}
                   onClick={() => this.handleColorPickerClose()}
                 />
-                <div style={pickerStyle}>
+                <div style={pickerStyle} ref={this.colorPickerRef}>
                   <SketchPicker
-                    ref='colorPicker'
                     color={this.state.folder.color}
                     onChange={color => this.handleColorChange(color)}
                     onChangeComplete={color => this.handleColorChange(color)}

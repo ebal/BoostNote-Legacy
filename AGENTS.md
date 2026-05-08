@@ -72,6 +72,7 @@ This ensures the host `./dist/` always reflects the latest build.
 - **Immutable.js-lite** — Redux store uses `browser/lib/Mutable.js` wrapping `immutable` Map/Set, not plain JS objects.
 - **`locales/` directory** — i18n translations for multiple languages; loaded via `browser/lib/i18n.js`.
 - **Webpack 1 `process` shim** — Webpack 1 injects its own `process` polyfill into the renderer bundle. The shim has `process.versions = {}`, so `process.versions.node` is `undefined`. Any dependency that reads `process.versions.node` at module load time (e.g. `fs-extra@7+` with its `nodeSupportsBigInt()` check) will crash at runtime with `Cannot read property 'split' of undefined`. Cap such dependencies below the version that introduced the check, or ensure they are excluded from the webpack bundle entirely.
+- **Prettier version mismatch (host vs Docker)** — `package.json` specifies `prettier@^1.19.1`; Docker's `yarn install` resolves this correctly. The host `node_modules/` (never updated via yarn — Docker-only policy) retains an older `1.18.x` prettier that has opposite template-literal formatting opinions. Running `npm run lint` on the host passes; running it inside Docker shows 6 pre-existing `prettier/prettier` errors in `MarkdownPreview.js`, `markdown.js`, and `store.js`. These are unfixable without running yarn on the host. Do not attempt to resolve them by reformatting — the two versions will keep reverting each other.
 
 ## Style
 

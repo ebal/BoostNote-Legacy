@@ -4,18 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Common Changelog](https://common-changelog.org) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.16.4] - 2026-05-08
 
 ### Fixed
 
-- Replace `ReactDOM.render()` return-value pattern with `React.createRef()` in `modal.js` (`react/no-render-return-value`).
+- Replace `ReactDOM.render()` return-value pattern with `React.createRef()` in `modal.js` ([`71ad006`](../../commit/71ad0060)). `ModalBase.close()` now uses `this.setState()` instead of a circular module-level reference.
 
 ### Changed
 
-- Rename deprecated `componentWillReceiveProps` / `componentWillUpdate` to `UNSAFE_*` in `ColorPicker`, `SnippetTab`, `SnippetNoteDetail`, `NoteList` (`react/no-deprecated`).
-- Add `/* global _ */` to `formatHTML.js` — lodash is a runtime global loaded via `<script>` tag, not a bundle import (`no-undef`).
-- Disable auto-update: removed `electron-gh-releases` dependency and all updater code from `main-app.js`; manual Update menu item responds with "disabled" message ([`23e0f2da`](../../commit/23e0f2da)).
-- Show git commit hash in Help → About dialog (`Version: 0.16.3 (abcd1234)`). Pass `--build-arg GIT_COMMIT=$(git rev-parse --short HEAD)` at build time ([`8fda299b`](../../commit/8fda299b)).
+- Rename deprecated `componentWillReceiveProps` / `componentWillUpdate` to `UNSAFE_*` in `ColorPicker`, `SnippetTab`, `SnippetNoteDetail`, `NoteList` ([`71ad006`](../../commit/71ad0060)).
+- Add `/* global _ */` to `formatHTML.js` — lodash is a runtime global loaded via `<script>` tag, not a bundle import ([`71ad006`](../../commit/71ad0060)).
+- Disable auto-update: removed `electron-gh-releases` dependency and all updater code from `main-app.js`; manual Update menu item responds with "Auto-update is disabled in this build" ([`23e0f2da`](../../commit/23e0f2da)).
+- Show git commit hash in Help → About dialog (`Version: 0.16.4 (abcd1234)`). Requires `--build-arg GIT_COMMIT=$(git rev-parse --short HEAD)` at Docker build time ([`8fda299b`](../../commit/8fda299b)).
 
 ## [0.16.3] - 2026-05-08
 
@@ -61,6 +61,7 @@ The format is based on [Common Changelog](https://common-changelog.org) and this
 
 - Add update menu item with download confirmation dialog ([`85d09b3b`](../../commit/85d09b3b), [`553832bd`](../../commit/553832bd)).
 
+[0.16.4]: ../../compare/v0.16.3...v0.16.4
 [0.16.3]: ../../compare/v0.16.2...v0.16.3
 [0.16.2]: ../../compare/v0.16.1...v0.16.2
 [0.16.1]: ../../compare/v0.16.0...v0.16.1

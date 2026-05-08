@@ -438,25 +438,29 @@ class Markdown {
       token = state.push('paragraph_open', 'p', 1)
       token.map = [startLine, state.line]
 
-      if (state.parentType === 'list') {
-        const match = content.match(/^\[( |x)\] ?(.+)/i)
-        if (match) {
-          const liToken = lastFindInArray(
-            state.tokens,
-            token => token.type === 'list_item_open'
-          )
-          if (liToken) {
-            if (!liToken.attrs) {
-              liToken.attrs = []
-            }
-            if (config.preview.lineThroughCheckbox) {
-              liToken.attrs.push([
-                'class',
-                `taskListItem${match[1] !== ' ' ? ' checked' : ''}`
-              ])
-            } else {
-              liToken.attrs.push(['class', 'taskListItem'])
-            }
+      const match = content.match(/^\[( |x)\] ?(.+)/i)
+      if (match) {
+        const liToken = lastFindInArray(
+          state.tokens,
+          token => token.type === 'list_item_open'
+        )
+        const liTokenIdx = liToken ? state.tokens.indexOf(liToken) : -1
+        const insideListItem =
+          liTokenIdx >= 0 &&
+          !state.tokens
+            .slice(liTokenIdx + 1)
+            .some(t => t.type === 'list_item_close')
+        if (insideListItem) {
+          if (!liToken.attrs) {
+            liToken.attrs = []
+          }
+          if (config.preview.lineThroughCheckbox) {
+            liToken.attrs.push([
+              'class',
+              `taskListItem${match[1] !== ' ' ? ' checked' : ''}`
+            ])
+          } else {
+            liToken.attrs.push(['class', 'taskListItem'])
           }
           content = `<label class='taskListItem${
             match[1] !== ' ' ? ' checked' : ''

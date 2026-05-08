@@ -19,7 +19,7 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 RUN npm install -g npm@6 && \
   git config --global url."https://".insteadOf git:// && \
-  yarn install && \
+  yarn install --ignore-engines && \
   yarn global add grunt-cli@1.3.2
 
 COPY . .

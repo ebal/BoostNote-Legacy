@@ -27,7 +27,7 @@ Legacy desktop note-taking app for programmers. Built with **Electron 5**, **Rea
 
 | Container command | Host equivalent (DO NOT RUN) |
 |---|---|
-| `docker build --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) -t boostnote-legacy .` | *(build)* |
+| `docker build --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) -t boostnote-legacy .` | *(build — Intel/amd64)* |
 | `docker run --rm boostnote-legacy npm run test` | `npm run test` |
 | `docker run --rm boostnote-legacy npm run lint` | `npm run lint` |
 | `docker run --rm boostnote-legacy npm run ava` | `npm run ava` |
@@ -37,6 +37,28 @@ Legacy desktop note-taking app for programmers. Built with **Electron 5**, **Rea
 | `codesign --deep --force --sign - <app>` | `grunt build` (codesign step) |
 
 > **Note:** Always pass `--build-arg GIT_COMMIT=$(git rev-parse --short HEAD)` when building. Without it the About dialog shows `unknown` as the commit hash.
+
+## Apple Silicon build (arm64 branch)
+
+`Dockerfile.arm64` runs the build container natively on Apple Silicon. Output is still `darwin/x64` — Electron 5 has no arm64 darwin binaries; the packaged `.app` runs on Apple Silicon via Rosetta 2.
+
+```bash
+docker build --platform linux/arm64 \
+  --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) \
+  -f Dockerfile.arm64 -t boostnote-legacy-arm64 .
+```
+
+Export after build:
+
+```bash
+docker cp $(docker create --rm boostnote-legacy-arm64):/app/dist/Boostnote-darwin-x64 ./dist/
+```
+
+Tests:
+
+```bash
+docker run --platform linux/arm64 --rm boostnote-legacy-arm64 npm run test
+```
 
 ## Export after every build
 

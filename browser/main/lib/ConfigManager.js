@@ -8,7 +8,6 @@ const win = global.process.platform === 'win32'
 const electron = require('electron')
 const { ipcRenderer } = electron
 const consts = require('browser/lib/consts')
-const electronConfig = new (require('electron-config'))()
 
 let isInitialized = false
 
@@ -43,8 +42,6 @@ export const DEFAULT_CONFIG = {
   sortTagsBy: 'ALPHABETICAL', // 'ALPHABETICAL', 'COUNTER'
   listStyle: 'DEFAULT', // 'DEFAULT', 'SMALL'
   listDirection: 'ASCENDING', // 'ASCENDING', 'DESCENDING'
-  amaEnabled: true,
-  autoUpdateEnabled: true,
   hotkey: {
     toggleMain: OSX ? 'Command + Alt + L' : 'Super + Alt + E',
     toggleMode: OSX ? 'Command + Alt + M' : 'Ctrl + M',
@@ -188,11 +185,6 @@ function get() {
     _save(config)
   }
 
-  config.autoUpdateEnabled = electronConfig.get(
-    'autoUpdateEnabled',
-    config.autoUpdateEnabled
-  )
-
   if (!isInitialized) {
     isInitialized = true
     let editorTheme = document.getElementById('editorTheme')
@@ -251,8 +243,6 @@ function set(updates) {
   if (newTheme) {
     editorTheme.setAttribute('href', newTheme.path)
   }
-
-  electronConfig.set('autoUpdateEnabled', newConfig.autoUpdateEnabled)
 
   ipcRenderer.send('config-renew', {
     config: get()

@@ -3,13 +3,8 @@ import React from 'react'
 import CSSModules from 'browser/lib/CSSModules'
 import styles from './StatusBar.styl'
 import ZoomManager from 'browser/main/lib/ZoomManager'
-import i18n from 'browser/lib/i18n'
 import context from 'browser/lib/context'
 import EventEmitter from 'browser/main/lib/eventEmitter'
-
-const electron = require('electron')
-const { remote, ipcRenderer } = electron
-const { dialog } = remote
 
 const zoomOptions = [
   0.8,
@@ -45,19 +40,6 @@ class StatusBar extends React.Component {
     EventEmitter.off('status:zoomin', this.handleZoomInMenuItem)
     EventEmitter.off('status:zoomout', this.handleZoomOutMenuItem)
     EventEmitter.off('status:zoomreset', this.handleZoomResetMenuItem)
-  }
-
-  updateApp() {
-    const index = dialog.showMessageBox(remote.getCurrentWindow(), {
-      type: 'warning',
-      message: i18n.__('Update Boostnote'),
-      detail: i18n.__('New Boostnote is ready to be installed.'),
-      buttons: [i18n.__('Restart & Install'), i18n.__('Not Now')]
-    })
-
-    if (index === 0) {
-      ipcRenderer.send('update-app-confirm')
-    }
   }
 
   handleZoomButtonClick(e) {
@@ -97,7 +79,7 @@ class StatusBar extends React.Component {
   }
 
   render() {
-    const { config, status } = this.context
+    const { config } = this.context
 
     return (
       <div className='StatusBar' styleName='root'>
@@ -105,24 +87,13 @@ class StatusBar extends React.Component {
           <img src='../resources/icon/icon-zoom.svg' />
           <span>{Math.floor(config.zoom * 100)}%</span>
         </button>
-
-        {status.updateReady ? (
-          <button onClick={this.updateApp} styleName='update'>
-            <i styleName='update-icon' className='fa fa-cloud-download' />{' '}
-            {i18n.__('Ready to Update!')}
-          </button>
-        ) : null}
       </div>
     )
   }
 }
 
 StatusBar.contextTypes = {
-  status: PropTypes.shape({
-    updateReady: PropTypes.bool.isRequired
-  }).isRequired,
-  config: PropTypes.shape({}).isRequired,
-  date: PropTypes.string
+  config: PropTypes.shape({}).isRequired
 }
 
 StatusBar.propTypes = {

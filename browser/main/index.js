@@ -11,13 +11,6 @@ import DevTools from './DevTools'
 
 require('./lib/ipcClient')
 require('../lib/customMeta')
-import i18n from 'browser/lib/i18n'
-import ConfigManager from './lib/ConfigManager'
-
-const electron = require('electron')
-
-const { remote, ipcRenderer } = electron
-const { dialog } = remote
 
 document.addEventListener('drop', function(e) {
   e.preventDefault()
@@ -91,39 +84,6 @@ if (!config.get().ui.showScrollBar) {
 
 const el = document.getElementById('content')
 
-function notify(...args) {
-  return new window.Notification(...args)
-}
-
-function updateApp() {
-  const index = dialog.showMessageBox(remote.getCurrentWindow(), {
-    type: 'warning',
-    message: i18n.__('Update Boostnote'),
-    detail: i18n.__('New Boostnote is ready to be installed.'),
-    buttons: [i18n.__('Restart & Install'), i18n.__('Not Now')]
-  })
-
-  if (index === 0) {
-    ipcRenderer.send('update-app-confirm')
-  }
-}
-
-function downloadUpdate() {
-  const index = dialog.showMessageBox(remote.getCurrentWindow(), {
-    type: 'warning',
-    message: i18n.__('Update Boostnote'),
-    detail: i18n.__('New Boostnote is ready to be downloaded.'),
-    buttons: [i18n.__('Download now'), i18n.__('Ignore updates')]
-  })
-
-  if (index === 0) {
-    ipcRenderer.send('update-download-confirm')
-  } else if (index === 1) {
-    ipcRenderer.send('update-cancel')
-    ConfigManager.set({ autoUpdateEnabled: false })
-  }
-}
-
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
@@ -152,25 +112,5 @@ ReactDOM.render(
   function() {
     const loadingCover = document.getElementById('loadingCover')
     loadingCover.parentNode.removeChild(loadingCover)
-
-    ipcRenderer.on('update-ready', function() {
-      store.dispatch({
-        type: 'UPDATE_AVAILABLE'
-      })
-      notify('Update ready!', {
-        body: 'New Boostnote is ready to be installed.'
-      })
-      updateApp()
-    })
-
-    ipcRenderer.on('update-found', function() {
-      downloadUpdate()
-    })
-
-    ipcRenderer.on('update-not-found', function(_, msg) {
-      notify('Update not found!', {
-        body: msg
-      })
-    })
   }
 )

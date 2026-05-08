@@ -15,7 +15,8 @@
 |---|---:|---:|---:|---:|---|
 | 0.16.1 | 4.2.12 | 69.0.3497.128 | 10.11.0 | 6.9.427.31-electron.0 | baseline |
 | 0.16.2 | 5.0.13 | 73.0.3683.121 | 12.0.0 | 7.3.492.27-electron.0 | stable |
-| 0.16.3 | 5.0.13 | 73.0.3683.121 | 12.0.0 | 7.3.492.27-electron.0 | current |
+| 0.16.3 | 5.0.13 | 73.0.3683.121 | 12.0.0 | 7.3.492.27-electron.0 | stable |
+| 0.16.4 | 5.0.13 | 73.0.3683.121 | 12.0.0 | 7.3.492.27-electron.0 | current |
 
 ## Iterations
 
@@ -55,18 +56,38 @@ Summary of changes:
 | Lint | Removed unused `EOL` and `title` variables from `markdown-toc-generator.test.js` |
 | Docs | Added `CHANGELOG.md` (Common Changelog format); documented Webpack 1 `process` shim constraint in `AGENTS.md` |
 
-### Post-0.16.3 improvements (unreleased)
+### 0.16.3 to 0.16.4 — auto-update removal, lint baseline, commit hash
 
-Status: in-progress
+Status: successful
+
+- **source version**: 0.16.3 (Electron 5.0.13)
+- **target version**: 0.16.4 (Electron 5.0.13 — no Electron change)
+- **changed files**:
+  - `browser/components/ColorPicker.js`
+  - `browser/components/SnippetTab.js`
+  - `browser/main/Detail/SnippetNoteDetail.js`
+  - `browser/main/NoteList/index.js`
+  - `browser/main/lib/dataApi/formatHTML.js`
+  - `browser/main/lib/modal.js`
+  - `browser/main/index.js`
+  - `lib/main-app.js`
+  - `lib/main-menu.js`
+  - `Dockerfile`
+  - `package.json`
+  - `yarn.lock`
+- **build command**: `docker build --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) -t boostnote-legacy .`
+- **test command**: `docker run --rm boostnote-legacy npm run test` (AVA + Jest)
+- **verification result**: host lint clean (0 errors, 0 warnings); app exports and launches correctly
+- **known issues**: Docker's older prettier version flags 6 pre-existing formatting issues in `MarkdownPreview.js`, `markdown.js`, and `store.js` — host prettier accepts them; cosmetic only, no runtime impact
+- **rollback commit**: `git revert HEAD` back to `4d02c6b2`
 
 | Area | Change |
 |---|---|
-| Auto-update | Removed `electron-gh-releases` and all updater code; manual Update menu responds "disabled" |
-| About dialog | Git commit hash injected via `--build-arg GIT_COMMIT` at Docker build time; shown as `Version: 0.16.3 (abcd1234)` |
-| Build command | Now requires `docker build --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) -t boostnote-legacy .` |
-| `modal.js` | `ReactDOM.render()` return value replaced with `React.createRef()` (`react/no-render-return-value`) |
-| Lifecycle methods | `componentWillReceiveProps`/`componentWillUpdate` renamed to `UNSAFE_*` in 4 files (`react/no-deprecated`) |
-| `formatHTML.js` | Added `/* global _ */` — lodash is a runtime global, not a bundle import (`no-undef`) |
+| Auto-update | Removed `electron-gh-releases` and all updater code from `main-app.js`; startup/reconnect auto-checks removed from renderer; manual Update menu responds "disabled" |
+| About dialog | Git commit hash injected via `--build-arg GIT_COMMIT` at Docker build time; shown as `Version: 0.16.4 (abcd1234)` |
+| `modal.js` | `ReactDOM.render()` return value replaced with `React.createRef()`; `close()` uses `this.setState()` |
+| Lifecycle methods | `componentWillReceiveProps`/`componentWillUpdate` → `UNSAFE_*` in 4 files; `eslint-disable-next-line camelcase` for Docker ESLint compat |
+| `formatHTML.js` | `/* global _ */` — lodash is a runtime global, not a bundle import |
 
 ---
 

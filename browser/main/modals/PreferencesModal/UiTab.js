@@ -109,9 +109,10 @@ class UiTab extends React.Component {
       editor: {
         theme: this.refs.editorTheme.value,
         fontSize: this.refs.editorFontSize.value,
-        fontFamily: this.refs.editorFontFamily.value === '__custom__'
-          ? this.refs.editorFontFamilyCustom.value
-          : this.refs.editorFontFamily.value,
+        fontFamily:
+          this.refs.editorFontFamily.value === '__custom__'
+            ? this.refs.editorFontFamilyCustom.value
+            : this.refs.editorFontFamily.value,
         indentType: this.refs.editorIndentType.value,
         indentSize: this.refs.editorIndentSize.value,
         enableRulers: this.refs.enableEditorRulers.value === 'true',
@@ -255,6 +256,9 @@ class UiTab extends React.Component {
       'function iamHappy (happy) {\n\tif (happy) {\n\t  console.log("I am Happy!")\n\t} else {\n\t  console.log("I am not Happy!")\n\t}\n};'
     const enableEditRulersStyle = config.editor.enableRulers ? 'block' : 'none'
     const fontFamily = normalizeEditorFontFamily(config.editor.fontFamily)
+    const isCustomFont = !editorFonts.some(
+      f => f.value === config.editor.fontFamily
+    )
     return (
       <div styleName='root'>
         <div styleName='group'>
@@ -617,7 +621,7 @@ class UiTab extends React.Component {
             <div styleName='group-section-control'>
               <select
                 ref='editorFontFamily'
-                value={editorFonts.some(f => f.value === config.editor.fontFamily) ? config.editor.fontFamily : '__custom__'}
+                value={isCustomFont ? '__custom__' : config.editor.fontFamily}
                 onChange={e => this.handleUIChange(e)}
               >
                 {editorFonts.map(font => (
@@ -626,7 +630,7 @@ class UiTab extends React.Component {
                   </option>
                 ))}
               </select>
-              {editorFonts.some(f => f.value === config.editor.fontFamily) ? null : (
+              {isCustomFont ? (
                 <input
                   styleName='group-section-control-input'
                   ref='editorFontFamilyCustom'
@@ -634,7 +638,7 @@ class UiTab extends React.Component {
                   onChange={e => this.handleUIChange(e)}
                   type='text'
                 />
-              )}
+              ) : null}
             </div>
           </div>
           <div styleName='group-section'>

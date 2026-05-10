@@ -8,9 +8,9 @@
 
 ## Risks (crashes / race conditions / silent failures)
 
-- [ ] **index.js:23** — `updateProcess.stdout` accessed without null-check after `spawn()`. Guard: `if (updateProcess)` before accessing.
-- [ ] **ConfigManager.js:173** — `JSON.parse()` called without try/catch when value may be `null` → `TypeError` crash on corrupt/missing config.
-- [ ] **dataApi/deleteNote.js:30-33** — `deleteAttachmentFolder()` not awaited → race condition; attachments may outlive deleted note on disk.
-- [ ] **browser/main/index.js:76** — Hardcoded `document.styleSheets[54]` index for `insertRule()`. Breaks silently if stylesheet load order changes.
-- [ ] **dataApi/formatPDF.js:8** — `webSecurity: false` in PDF generation window → no CORS/CSP enforcement during PDF render.
-- [ ] **webpack-skeleton.js:10** — `resolve.extensions` includes empty string `''` → ambiguous module resolution, masks missing extensions.
+- [x] **index.js:23** — `updateProcess.stdout` accessed after `spawn()` throw: catch called `cb(e)` but didn't `return`, so execution continued with `updateProcess = null`. Added `return` in catch.
+- [x] **browser/main/index.js:76** — Hardcoded `document.styleSheets[54]` replaced with a dedicated `<style>` element appended to `<head>`.
+- [~] **ConfigManager.js:173** — False positive. `JSON.parse(null)` returns `null` in JS; `Object.assign({}, DEFAULT_CONFIG, null)` ignores null source → safe.
+- [~] **dataApi/deleteNote.js:30-33** — False positive. `deleteAttachmentFolder` uses `rimrafSync` (synchronous); no Promise, no race condition.
+- [~] **dataApi/formatPDF.js:8** — Intentional. `webSecurity: false` needed to load local `file://` attachment images in PDF export. Mitigated by `javascript: false`.
+- [~] **webpack-skeleton.js:10** — Intentional. Empty string `''` in Webpack 1 `resolve.extensions` is the standard idiom to allow explicit-extension imports.

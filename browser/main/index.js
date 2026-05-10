@@ -73,13 +73,12 @@ document.addEventListener('click', function(e) {
 })
 
 if (!config.get().ui.showScrollBar) {
-  document.styleSheets[54].insertRule('::-webkit-scrollbar {display: none}')
-  document.styleSheets[54].insertRule(
-    '::-webkit-scrollbar-corner {display: none}'
-  )
-  document.styleSheets[54].insertRule(
-    '::-webkit-scrollbar-thumb {display: none}'
-  )
+  const scrollbarStyleEl = document.createElement('style')
+  document.head.appendChild(scrollbarStyleEl)
+  const scrollbarSheet = scrollbarStyleEl.sheet
+  scrollbarSheet.insertRule('::-webkit-scrollbar {display: none}')
+  scrollbarSheet.insertRule('::-webkit-scrollbar-corner {display: none}')
+  scrollbarSheet.insertRule('::-webkit-scrollbar-thumb {display: none}')
 }
 
 const el = document.getElementById('content')

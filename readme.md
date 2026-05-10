@@ -1,46 +1,149 @@
-> # New Boost Note app is available!
->
-> We've launched a new Boost Note app which supports real-time collaborative writing.
->
-> And it is open sourced too! Please check it out! https://github.com/BoostIO/BoostNote-App
->
-> ## 📦 Download App
->
-> ### 🖥 Desktop
->
-> - [🌎 Web App (boostnote.io)](https://boostnote.io)
-> - [🍎 macOS (.dmg)](https://github.com/BoostIO/BoostNote-App/releases/latest/download/boost-note-mac.dmg)
-> - [:framed_picture: Windows (.exe NSIS)](https://github.com/BoostIO/BoostNote-App/releases/latest/download/boost-note-win.exe)
-> - [🐧 Linux (.deb)](https://github.com/BoostIO/BoostNote-App/releases/latest/download/boost-note-linux.deb)
-> - [🐧 Linux (.rpm)](https://github.com/BoostIO/BoostNote-App/releases/latest/download/boost-note-linux.rpm)
->
-> ### 📱 Mobile
->
-> - [🌎 Mobile Web App (m.boostnote.io)](https://m.boostnote.io)
-> - [🍏 iOS (Apple App Store)](https://apps.apple.com/gb/app/boost-note-mobile/id1576176505)
-> - [🤖 Android (Google Play Store)](https://play.google.com/store/apps/details?id=com.boostio.boostnote2021)
-
 <h1 align="center">BoostNote-Legacy</h1>
 
-<h4 align="center">Note-taking app for programmers. </h4>
-<h5 align="center">Apps available for Mac, Windows and Linux.</h5>
-<h5 align="center">Built with Electron, React + Redux, Webpack, and CSSModules.</h5>
+<h4 align="center">Note-taking app for programmers.</h4>
+<h5 align="center">Apps available for Mac (Intel & Apple Silicon), Windows and Linux.</h5>
+<h5 align="center">Built with Electron 11, React + Redux, Webpack 1, and CSSModules.</h5>
+
 <p align="center">
-  <a href="https://travis-ci.org/BoostIO/Boostnote">
-    <img src="https://travis-ci.org/BoostIO/Boostnote.svg?branch=master" alt="Build Status" />
+  <a href="https://github.com/BoostIO/Boostnote">
+    <img src="https://img.shields.io/badge/status-maintenance-yellow" alt="Maintenance" />
   </a>
- </p>
+  <a href="https://github.com/BoostIO/Boostnote/releases">
+    <img src="https://img.shields.io/github/v/release/BoostIO/Boostnote" alt="Release" />
+  </a>
+</p>
 
-## Download
+This is the **legacy** branch of Boostnote — a markdown-first, open-source note-taking application for developers. Notes are stored as local files (`.cson`) in user-defined storage directories.
 
-[Find the latest release of Boostnote here!](https://github.com/BoostIO/boost-releases/releases/)
+> The successor app (Boost Note) is at [github.com/BoostIO/BoostNote-App](https://github.com/BoostIO/BoostNote-App).
 
-#### More Information
+---
 
-- Website: https://boostnote.io
-- [Development](https://github.com/BoostIO/Boostnote/blob/master/docs/build.md): Development configurations for Boostnote.
-- Copyright (C) 2016 - 2020 BoostIO, Inc.
+## Features
 
-#### License
+- **Markdown notes** with GFM, KaTeX math, syntax highlighting, diagrams (mermaid, flowchart.js, PlantUML, sequence)
+- **Snippet notes** — multi-tab code snippet collections
+- **Folder & tag-based organization**
+- **Full-text search** across all notes
+- **Multiple storage locations**
+- **21 interface languages**
+- **Full keyboard navigation**
+- **Vim/Emacs/Sublime keymaps** for CodeMirror
 
-[GPL v3](./LICENSE).
+---
+
+## Recent updates (v0.16.x)
+
+| Version | What changed |
+|---------|-------------|
+| 0.16.9 | Greek (el_GR) spellcheck dictionary, rewritten readme, version-bump agent skill |
+| 0.16.8 | Unified Dockerfile for Intel & Apple Silicon |
+| 0.16.7 | **Electron 5 → 11.5.0**, native arm64 (Apple Silicon) build, Dialog API migration |
+| 0.16.6 | Removed BoostIO marketing integrations, auto-update UI |
+| 0.16.5 | **Removed all analytics telemetry** (AWS SDK, tracking calls) |
+| 0.16.4 | Removed auto-update, git commit hash in About dialog, zero-lint-warning baseline |
+| 0.16.3 | Upgraded all deps to latest compatible; markdown-it 12 fix |
+| 0.16.2 | Electron 1.x → 5.0.13, multi-stage Dockerfile |
+
+Full changelog: [CHANGELOG.md](CHANGELOG.md)
+
+---
+
+## Build (Docker only)
+
+All builds run **inside Docker** — never run `npm`/`yarn`/`electron`/`grunt` on the host.
+
+### amd64 (Intel Mac / Linux / Windows)
+
+```bash
+docker build --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) -t boostnote-legacy .
+```
+
+### arm64 (Apple Silicon Mac)
+
+```bash
+docker build --platform linux/arm64 \
+  --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) \
+  --build-arg BUILDARCH=arm64 \
+  -t boostnote-legacy-arm64 .
+```
+
+### Export packaged .app
+
+```bash
+# Intel
+docker cp $(docker create --rm boostnote-legacy):/app/dist/Boostnote-darwin-x64 ./dist/
+# Apple Silicon
+docker cp $(docker create --rm boostnote-legacy-arm64):/app/dist/Boostnote-darwin-arm64 ./dist/
+```
+
+---
+
+## Development
+
+```bash
+docker run --rm boostnote-legacy npm run dev
+```
+
+Starts webpack-dev-server on `:8080` with Electron HMR.
+
+---
+
+## Test & Lint
+
+```bash
+# All tests
+docker run --rm boostnote-legacy npm test
+
+# Lint
+docker run --rm boostnote-legacy npm run lint
+
+# AVA only
+docker run --rm boostnote-legacy npm run ava
+
+# Jest only
+docker run --rm boostnote-legacy npm run jest
+```
+
+> **Note:** Jest picks up test files inside `dist/Boostnote-darwin-*/` — pre-existing failures with environment mismatch. `createNote`/`createNoteFromUrl` Jest tests also have pre-existing test-data failures. These are unrelated to code changes.
+
+---
+
+## Architecture
+
+```
+index.js → Squirrel lifecycle → lib/main-app.js
+                                    ├── lib/main-window.js (BrowserWindow)
+                                    ├── lib/main-menu.js (native menu)
+                                    ├── lib/ipcServer.js (node-ipc)
+                                    └── lib/touchbar-menu.js
+                                            ↓
+browser/main/index.js (webpack entry → compiled/main.js)
+    ├── Redux store (browser/main/store.js)
+    ├── Main.js → SideNav | NoteList | Detail
+    ├── components/ (MarkdownEditor, MarkdownPreview, CodeEditor, etc.)
+    └── lib/ (markdown processing, search, i18n, data API)
+```
+
+---
+
+## Tech stack
+
+| Layer | Technology |
+|-------|-----------|
+| Runtime | Electron 11.5.0 (Chrome 87, Node 12) |
+| UI | React 16 + React Router 5 |
+| State | Redux 4 + Immutable.js (via Mutable.js wrappers) |
+| Editor | CodeMirror 5 (GFM mode + custom BFM mode) |
+| Markdown | markdown-it 12 (15 plugins) |
+| CSS | Stylus + CSS Modules |
+| Build | Webpack 1 + Babel 6 + Grunt |
+| Packaging | electron-packager 15 |
+| Tests | AVA + Jest |
+
+---
+
+## License
+
+[GPL v3](./LICENSE)
+

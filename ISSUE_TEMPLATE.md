@@ -30,6 +30,5 @@ Please be thorough, issues we can reproduce are easier to fix.
 - OS version and name: <!-- Windows 10 / Ubuntu 18.04 / etc -->
 
 <!--
-Love Boostnote? Please consider supporting us on IssueHunt:
-👉  https://issuehunt.io/repos/53266139
+All builds run inside Docker. See AGENTS.md for build and test commands.
 -->

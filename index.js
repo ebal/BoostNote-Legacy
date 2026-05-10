@@ -18,6 +18,7 @@ function execMainApp() {
       process.nextTick(function() {
         cb(e)
       })
+      return
     }
 
     updateProcess.stdout.on('data', function(data) {

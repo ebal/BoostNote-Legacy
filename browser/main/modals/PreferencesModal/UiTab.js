@@ -111,7 +111,8 @@ class UiTab extends React.Component {
         scheduledTheme: this.refs.uiScheduledTheme.value,
         scheduleStart: this.refs.scheduleStart.value,
         scheduleEnd: this.refs.scheduleEnd.value,
-        language: this.refs.uiLanguage.value,
+        language:
+          this.refs.uiLanguage != null ? this.refs.uiLanguage.value : 'en',
         defaultNote: this.refs.defaultNote.value,
         tagNewNoteWithFilteringTags: this.refs.tagNewNoteWithFilteringTags
           .checked,

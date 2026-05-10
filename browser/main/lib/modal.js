@@ -11,6 +11,7 @@ class ModalBase extends React.Component {
       componentProps: {},
       isHidden: true
     }
+    this.close = this.close.bind(this)
   }
 
   close() {

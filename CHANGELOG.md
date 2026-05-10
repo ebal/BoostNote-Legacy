@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Common Changelog](https://common-changelog.org) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.3] - 2026-05-10
+
+### Fixed
+
+- Fix DevTools CSS source map warnings by removing `?sourceMap` from stylus loader in production webpack config; style-loader was emitting `sourceMappingURL` comments for files that were never generated ([`d8bde12`](../../commit/d8bde12)).
+
+### Changed
+
+- Add `build-test-verify` agent skill for Docker-based build, test, and export workflow ([`d8bde12`](../../commit/d8bde12)).
+
 ## [0.17.2] - 2026-05-10
 
 ### Fixed
@@ -146,6 +156,7 @@ The format is based on [Common Changelog](https://common-changelog.org) and this
 
 - Add update menu item with download confirmation dialog ([`85d09b3b`](../../commit/85d09b3b), [`553832bd`](../../commit/553832bd)).
 
+[0.17.3]: ../../compare/v0.17.2...v0.17.3
 [0.17.0]: ../../compare/v0.16.9...v0.17.0
 [0.16.9]: ../../compare/v0.16.8...v0.16.9
 [0.16.4]: ../../compare/v0.16.3...v0.16.4

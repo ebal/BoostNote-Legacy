@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Common Changelog](https://common-changelog.org) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.0] - 2026-05-10
+
+### Removed
+
+- Remove all non-English interface languages from Settings → Interface → Language. Only English remains. Language dropdown is hidden when only one language is available ([`07096e6`](../../commit/07096e6)).
+- Delete 19 locale entries from `Languages.js` — all languages except English stripped from the UI selector.
+
 ## [0.16.9] - 2026-05-10
 
 ### Added
@@ -121,6 +128,7 @@ The format is based on [Common Changelog](https://common-changelog.org) and this
 
 - Add update menu item with download confirmation dialog ([`85d09b3b`](../../commit/85d09b3b), [`553832bd`](../../commit/553832bd)).
 
+[0.17.0]: ../../compare/v0.16.9...v0.17.0
 [0.16.9]: ../../compare/v0.16.8...v0.16.9
 [0.16.4]: ../../compare/v0.16.3...v0.16.4
 [0.16.3]: ../../compare/v0.16.2...v0.16.3

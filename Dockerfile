@@ -1,43 +1,63 @@
-FROM node:8.17.0 AS base
+# Unified Dockerfile for BoostNote-Legacy
+# Builds for both amd64 (Intel Mac) and arm64 (Apple Silicon).
+#
+# Build for Intel Mac / amd64:
+#   docker build --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) -t boostnote-legacy .
+#
+# Build for Apple Silicon / arm64:
+#   docker build --platform linux/arm64 \
+#     --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) \
+#     --build-arg BUILDARCH=arm64 -t boostnote-legacy-arm64 .
+#
+# Export:
+#   docker cp $(docker create --rm boostnote-legacy):/app/dist/Boostnote-darwin-x64 ./dist/
+#   docker cp $(docker create --rm boostnote-legacy-arm64):/app/dist/Boostnote-darwin-arm64 ./dist/
 
-# Debian Stretch is archived - need to use archive repos
-RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
-  sed -i 's/security.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
-  sed -i '/stretch-updates/d' /etc/apt/sources.list && \
-  echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check-valid-until
+ARG BUILDARCH=amd64
 
-# Python 2.7 needed for node-gyp with old native modules
+FROM node:14-bullseye AS base
+
 RUN apt-get update && apt-get install -y \
-  python \
+  python3 \
+  python-is-python3 \
   build-essential \
   fakeroot \
+  git \
   && rm -rf /var/lib/apt/lists/*
 
 # ── deps stage: install node_modules and resolve yarn.lock ──────────────────
 FROM base AS deps
 WORKDIR /app
 COPY package.json yarn.lock ./
-RUN npm install -g npm@6 && \
+# node:14-bullseye ships yarn; skip reinstalling it to avoid symlink conflict
+RUN npm install -g npm@6 grunt-cli@1.3.2 && \
   git config --global url."https://".insteadOf git:// && \
-  yarn install --ignore-engines && \
-  yarn global add grunt-cli@1.3.2
+  yarn install --ignore-engines
 
 # ── build stage: compile and package ────────────────────────────────────────
 FROM deps AS build
 ARG GIT_COMMIT=unknown
+ARG BUILDARCH
 COPY . .
 # Restore yarn.lock resolved in deps stage (COPY . . overwrites with host version)
 COPY --from=deps /app/yarn.lock ./yarn.lock
 RUN echo "$GIT_COMMIT" > /app/commit-hash.txt
 
-# Compile webpack production build, then copy to staging for packaging
-# The staging copy avoids fs-extra overlayfs bug when electron-packager copies app dir
+# Compile webpack production build, then copy to staging for packaging.
+# The staging copy avoids fs-extra overlayfs bug when electron-packager copies app dir.
 RUN npm run compile && \
   mkdir -p /build && \
   cp -a /app /build/app && \
   cd /build/app && \
-  PACK_OUT_DIR=/build/out grunt pack:osx && \
-  mkdir -p /app/dist && cp -r /build/out/Boostnote-darwin-x64 /app/dist/
+  ARCH_SUFFIX=x64 && \
+  PACK_TARGET=osx && \
+  if [ "$BUILDARCH" = "arm64" ]; then \
+    ARCH_SUFFIX=arm64 && \
+    PACK_TARGET=osx-arm64; \
+  fi && \
+  PACK_OUT_DIR=/build/out grunt pack:$PACK_TARGET && \
+  mkdir -p /app/dist && \
+  cp -r /build/out/Boostnote-darwin-$ARCH_SUFFIX /app/dist/
 
-# Output: /app/dist/Boostnote-darwin-x64/Boostnote.app
+# Output: /app/dist/Boostnote-darwin-{x64,arm64}/Boostnote.app
 CMD ["sh", "-c", "ls -la dist/"]

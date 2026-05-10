@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Common Changelog](https://common-changelog.org) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.5] - 2026-05-10
+
+### Fixed
+
+- Remove dead "File → Update" menu item and auto-update IPC stubs (`update-check`, `update-app-confirm`, `update-cancel`, `update-download-confirm`) that were no-ops ([`93af875`](../../commit/93af875)).
+
 ## [0.17.4] - 2026-05-10
 
 ### Fixed
@@ -166,6 +172,7 @@ The format is based on [Common Changelog](https://common-changelog.org) and this
 
 - Add update menu item with download confirmation dialog ([`85d09b3b`](../../commit/85d09b3b), [`553832bd`](../../commit/553832bd)).
 
+[0.17.5]: ../../compare/v0.17.4...v0.17.5
 [0.17.4]: ../../compare/v0.17.3...v0.17.4
 [0.17.3]: ../../compare/v0.17.2...v0.17.3
 [0.17.0]: ../../compare/v0.16.9...v0.17.0

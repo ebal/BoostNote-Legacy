@@ -7,19 +7,20 @@
 | Task | Command |
 |---|---|
 | Build (Intel) | `docker build --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) -t boostnote-legacy .` |
-| Build (arm64) | `docker build --platform linux/arm64 --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) -f Dockerfile.arm64 -t boostnote-legacy-arm64 .` |
+| Build (arm64) | `docker build --platform linux/arm64 --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) --build-arg BUILDARCH=arm64 -t boostnote-legacy-arm64 .` |
 | Test all | `docker run --rm boostnote-legacy npm test` |
 | Lint | `docker run --rm boostnote-legacy npm run lint` |
 | Fix | `docker run --rm boostnote-legacy npm run fix` |
 | AVA only | `docker run --rm boostnote-legacy npm run ava` |
 | Jest only | `docker run --rm boostnote-legacy npm run jest` |
 | Compile (webpack) | `docker run --rm boostnote-legacy npm run compile` |
-| Export .app to host | `docker cp $(docker create --rm boostnote-legacy):/app/dist/Boostnote-darwin-x64 ./dist/` |
+| Export .app (Intel) | `docker cp $(docker create --rm boostnote-legacy):/app/dist/Boostnote-darwin-x64 ./dist/` |
+| Export .app (arm64) | `docker cp $(docker create --rm boostnote-legacy-arm64):/app/dist/Boostnote-darwin-arm64 ./dist/` |
 | Dev | `docker run --rm boostnote-legacy npm run dev` (WDS :8080 + Electron HMR) |
 
 Without `GIT_COMMIT` build-arg → About dialog shows "unknown".
 
-Node 8.17 (Docker) / 8.x required. Modern Node will fail.
+Node 14 (bullseye) inside Docker. Unified Dockerfile supports both amd64 and arm64 builds.
 
 ## Architecture
 
@@ -46,7 +47,6 @@ Node 8.17 (Docker) / 8.x required. Modern Node will fail.
 
 ## Electron quirks
 
-- **Branch difference:** arm64 = Electron 11.5.0 (native darwin/arm64); intel = Electron 5.0.13
 - **Dialog API:** Electron 9+ removed sync/callback forms. Use `showMessageBoxSync` and Promise-based `showOpenDialog`/`showSaveDialog`
 - **`webPreferences`:** `enableRemoteModule: true`, `nodeIntegration: true`, `contextIsolation: false` required
 - `secret/auth_code.json` needed for codesigning; absent → skips silently

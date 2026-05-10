@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Common Changelog](https://common-changelog.org) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.16.8] - 2026-05-10
+
+### Changed
+
+- Unify `Dockerfile` to support both amd64 (Intel) and arm64 (Apple Silicon) builds via `BUILDARCH` build arg. Base image updated from `node:8.17` to `node:14-bullseye` (matching `Dockerfile.arm64`). Removed separate `Dockerfile.arm64` ([`829cd67d`](../../commit/829cd67d)).
+- Merge `arm64` and `intel` branches into `main`; delete both branches locally and on remote.
+
 ## [0.16.7] - 2026-05-08
 
 ### Added

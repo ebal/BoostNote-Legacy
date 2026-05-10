@@ -164,7 +164,7 @@ function data(state = defaultDataMap(), action) {
         let noteSet = state.storageNoteMap.get(note.storage)
         noteSet = new Set(noteSet)
         noteSet.add(uniqueKey)
-        state.storageNoteMap.set(folderKey, noteSet)
+        state.storageNoteMap.set(note.storage, noteSet)
       }
 
       // Update foldermap if folder changed or post created
@@ -302,7 +302,7 @@ function data(state = defaultDataMap(), action) {
 
         let folderNoteSet = state.folderNoteMap.get(folderKey)
         if (folderNoteSet == null) {
-          folderNoteSet = new Set(folderNoteSet)
+          folderNoteSet = new Set()
           state.folderNoteMap.set(folderKey, folderNoteSet)
         }
         folderNoteSet.add(uniqueKey)

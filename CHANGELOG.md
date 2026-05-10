@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Common Changelog](https://common-changelog.org) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.8] - 2026-05-10
+
+### Fixed
+
+- Add layout styles for Preferences modal Info tab and Snippet tab to fix content positioning ([`f4f9f0c`](../../commit/f4f9f0c)).
+
 ## [0.17.7] - 2026-05-10
 
 ### Fixed
@@ -185,6 +191,7 @@ The format is based on [Common Changelog](https://common-changelog.org) and this
 
 - Add update menu item with download confirmation dialog ([`85d09b3b`](../../commit/85d09b3b), [`553832bd`](../../commit/553832bd)).
 
+[0.17.8]: ../../compare/v0.17.7...v0.17.8
 [0.17.7]: ../../compare/v0.17.6...v0.17.7
 [0.17.6]: ../../compare/v0.17.5...v0.17.6
 [0.17.5]: ../../compare/v0.17.4...v0.17.5

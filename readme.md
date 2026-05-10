@@ -36,6 +36,7 @@ This is the **legacy** branch of Boostnote — a markdown-first, open-source not
 
 | Version | What changed |
 |---------|-------------|
+| 0.17.8 | Add layout styles for Preferences modal info and snippet tabs |
 | 0.17.7 | Strip hash fragment from file:// URIs in context menu builder |
 | 0.17.6 | Guard spawnUpdate null-deref, fix storageNoteMap key / folderNoteSet init, remove spurious backspace events |
 | 0.17.5 | Remove dead File > Update menu item and auto-update infrastructure |

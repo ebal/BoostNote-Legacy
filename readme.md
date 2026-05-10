@@ -36,6 +36,7 @@ This is the **legacy** branch of Boostnote — a markdown-first, open-source not
 
 | Version | What changed |
 |---------|-------------|
+| 0.17.1 | Prettier lint fix for UiTab.js editor font dropdown |
 | 0.17.0 | Removed all non-English interface languages; English-only Settings UI |
 | 0.16.9 | Greek (el_GR) spellcheck dictionary, rewritten readme, version-bump agent skill |
 | 0.16.8 | Unified Dockerfile for Intel & Apple Silicon |

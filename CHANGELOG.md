@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Common Changelog](https://common-changelog.org) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.16.9] - 2026-05-10
+
+### Added
+
+- Add Greek (el_GR) Hunspell dictionary for spellcheck support — new `dictionaries/el_GR/` with affix rules and 828k+ word list from LibreOffice ([`el_GR.aff`](../../dictionaries/el_GR/el_GR.aff), [`el_GR.dic`](../../dictionaries/el_GR/el_GR.dic)).
+- Add `version-bump` agent skill (`.agents/skills/version-bump/SKILL.md`) for automated release workflow — updates package.json, CHANGELOG.md, readme.md, and optionally UPGRADE.md.
+
+### Changed
+
+- Rewrite `readme.md` — removed stale upstream links and defunct Travis badge; added current build commands (Docker-only), architecture diagram, tech stack table, and changelog.
+- Streamline `contributing.md` to English only with Docker-only policy instructions.
+- Clean up `ISSUE_TEMPLATE.md` — removed dead IssueHunt sponsorship link, added Docker build note.
+
 ## [0.16.8] - 2026-05-10
 
 ### Changed
@@ -108,6 +121,7 @@ The format is based on [Common Changelog](https://common-changelog.org) and this
 
 - Add update menu item with download confirmation dialog ([`85d09b3b`](../../commit/85d09b3b), [`553832bd`](../../commit/553832bd)).
 
+[0.16.9]: ../../compare/v0.16.8...v0.16.9
 [0.16.4]: ../../compare/v0.16.3...v0.16.4
 [0.16.3]: ../../compare/v0.16.2...v0.16.3
 [0.16.2]: ../../compare/v0.16.1...v0.16.2

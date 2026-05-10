@@ -17,7 +17,8 @@ function getAvailableDictionaries() {
     { label: i18n.__('Spellcheck disabled'), value: SPELLCHECK_DISABLED },
     { label: i18n.__('English'), value: 'en_GB' },
     { label: i18n.__('German'), value: 'de_DE' },
-    { label: i18n.__('French'), value: 'fr_FR' }
+    { label: i18n.__('French'), value: 'fr_FR' },
+    { label: i18n.__('Greek'), value: 'el_GR' }
   ]
 }
 

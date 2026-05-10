@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Common Changelog](https://common-changelog.org) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.2] - 2026-05-10
+
+### Fixed
+
+- Fix font selection in Settings: apply `fontFamily` directly to CodeMirror wrapper element via `getWrapperElement().style.fontFamily` to circumvent CodeMirror's CSS `monospace` override ([`6f6e314`](../../commit/6f6e314)).
+- Fix CSS quoting in `normalizeEditorFontFamily`: wrap multi-word font names (e.g. `'JetBrains Mono'`) in quotes so CSS parses them as single font family ([`6f6e314`](../../commit/6f6e314)).
+- Fix crash in Settings when changing any option: guard `this.refs.uiLanguage` which is undefined when language select is hidden (only English) ([`f0ee976`](../../commit/f0ee976)).
+
+### Removed
+
+- Remove "Custom…" option from Editor Font Family dropdown; font dropdown now lists only concrete fonts ([`6f6e314`](../../commit/6f6e314)).
+
 ## [0.17.1] - 2026-05-10
 
 ### Fixed

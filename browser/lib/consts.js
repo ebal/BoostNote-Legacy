@@ -79,6 +79,7 @@ const consts = {
   THEMES: themes,
   SNIPPET_FILE: snippetFile,
   DEFAULT_EDITOR_FONT_FAMILY: [
+    'JetBrains Mono',
     'Monaco',
     'Menlo',
     'Ubuntu Mono',

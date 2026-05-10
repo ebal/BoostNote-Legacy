@@ -75,7 +75,7 @@ export const DEFAULT_CONFIG = {
     theme: 'base16-light',
     keyMap: 'sublime',
     fontSize: '14',
-    fontFamily: win ? 'Consolas' : 'Monaco',
+    fontFamily: 'JetBrains Mono',
     indentType: 'space',
     indentSize: '2',
     lineWrapping: true,

@@ -11,6 +11,7 @@ import 'codemirror-mode-elixir'
 import _ from 'lodash'
 import i18n from 'browser/lib/i18n'
 import { getLanguages } from 'browser/lib/Languages'
+import { editorFonts } from 'browser/lib/fonts'
 import normalizeEditorFontFamily from 'browser/lib/normalizeEditorFontFamily'
 import uiThemes from 'browser/lib/ui-themes'
 import { chooseTheme, applyTheme } from 'browser/main/lib/ThemeManager'
@@ -108,7 +109,9 @@ class UiTab extends React.Component {
       editor: {
         theme: this.refs.editorTheme.value,
         fontSize: this.refs.editorFontSize.value,
-        fontFamily: this.refs.editorFontFamily.value,
+        fontFamily: this.refs.editorFontFamily.value === '__custom__'
+          ? this.refs.editorFontFamilyCustom.value
+          : this.refs.editorFontFamily.value,
         indentType: this.refs.editorIndentType.value,
         indentSize: this.refs.editorIndentSize.value,
         enableRulers: this.refs.enableEditorRulers.value === 'true',
@@ -612,13 +615,26 @@ class UiTab extends React.Component {
               {i18n.__('Editor Font Family')}
             </div>
             <div styleName='group-section-control'>
-              <input
-                styleName='group-section-control-input'
+              <select
                 ref='editorFontFamily'
-                value={config.editor.fontFamily}
+                value={editorFonts.some(f => f.value === config.editor.fontFamily) ? config.editor.fontFamily : '__custom__'}
                 onChange={e => this.handleUIChange(e)}
-                type='text'
-              />
+              >
+                {editorFonts.map(font => (
+                  <option value={font.value} key={font.value}>
+                    {font.label}
+                  </option>
+                ))}
+              </select>
+              {editorFonts.some(f => f.value === config.editor.fontFamily) ? null : (
+                <input
+                  styleName='group-section-control-input'
+                  ref='editorFontFamilyCustom'
+                  value={config.editor.fontFamily}
+                  onChange={e => this.handleUIChange(e)}
+                  type='text'
+                />
+              )}
             </div>
           </div>
           <div styleName='group-section'>

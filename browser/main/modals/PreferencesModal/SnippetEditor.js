@@ -5,6 +5,7 @@ import styles from './SnippetTab.styl'
 import CSSModules from 'browser/lib/CSSModules'
 import dataApi from 'browser/main/lib/dataApi'
 import snippetManager from '../../../lib/SnippetManager'
+import normalizeEditorFontFamily from 'browser/lib/normalizeEditorFontFamily'
 
 const defaultEditorFontFamily = [
   'Monaco',
@@ -51,6 +52,9 @@ class SnippetEditor extends React.Component {
       mode: 'null'
     })
     this.cm.setSize('100%', '100%')
+    this.cm.getWrapperElement().style.fontFamily = normalizeEditorFontFamily(
+      this.props.fontFamily
+    )
     let changeDelay = null
 
     this.cm.on('change', () => {

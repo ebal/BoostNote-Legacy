@@ -609,6 +609,27 @@ export function buildStyle(
   text-rendering: optimizeLegibility;
 }
 @font-face {
+  font-family: 'JetBrains Mono';
+  src: url('${appPath}/resources/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+  font-style: normal;
+  font-weight: normal;
+  text-rendering: optimizeLegibility;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('${appPath}/resources/fonts/JetBrainsMono-Bold.woff2') format('woff2');
+  font-style: normal;
+  font-weight: bold;
+  text-rendering: optimizeLegibility;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('${appPath}/resources/fonts/JetBrainsMono-Italic.woff2') format('woff2');
+  font-style: italic;
+  font-weight: normal;
+  text-rendering: optimizeLegibility;
+}
+@font-face {
   font-family: 'Material Icons';
   font-style: normal;
   font-weight: 400;

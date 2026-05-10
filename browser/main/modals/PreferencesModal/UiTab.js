@@ -390,22 +390,24 @@ class UiTab extends React.Component {
             </div>
           </div>
 
-          <div styleName='group-section'>
-            <div styleName='group-section-label'>{i18n.__('Language')}</div>
-            <div styleName='group-section-control'>
-              <select
-                value={config.ui.language}
-                onChange={e => this.handleUIChange(e)}
-                ref='uiLanguage'
-              >
-                {getLanguages().map(language => (
-                  <option value={language.locale} key={language.locale}>
-                    {i18n.__(language.name)}
-                  </option>
-                ))}
-              </select>
+          {getLanguages().length > 1 ? (
+            <div styleName='group-section'>
+              <div styleName='group-section-label'>{i18n.__('Language')}</div>
+              <div styleName='group-section-control'>
+                <select
+                  value={config.ui.language}
+                  onChange={e => this.handleUIChange(e)}
+                  ref='uiLanguage'
+                >
+                  {getLanguages().map(language => (
+                    <option value={language.locale} key={language.locale}>
+                      {i18n.__(language.name)}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-          </div>
+          ) : null}
 
           <div styleName='group-section'>
             <div styleName='group-section-label'>

@@ -121,7 +121,8 @@ const buildMarkdownPreviewContextMenu = function(markdownPreview, event) {
     const href = event.target.href
     const isLocalFile = href.startsWith('file:')
     if (isLocalFile) {
-      const absPath = uri2path(href)
+      const hrefPath = href.includes('#') ? href.slice(0, href.indexOf('#')) : href
+      const absPath = uri2path(hrefPath)
       try {
         if (fs.lstatSync(absPath).isFile()) {
           template.push({

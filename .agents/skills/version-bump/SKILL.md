@@ -91,7 +91,19 @@ Stage all changed files and commit with the standard message:
 chore: bump version to NEW_VER
 ```
 
-Do NOT push. Do NOT create a tag.
+Do NOT push.
+
+### 9. Create git tag
+
+After the commit succeeds, create an annotated tag matching the new version:
+
+```bash
+git tag -a vNEW_VER -m "vNEW_VER"
+```
+
+Tag format: `v` prefix + version string from `package.json` (e.g. `v0.17.3`).
+
+Do NOT push tags — they remain local until the user explicitly pushes.
 
 ## Rules
 

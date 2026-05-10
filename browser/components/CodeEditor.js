@@ -362,6 +362,10 @@ export default class CodeEditor extends React.Component {
       prettierConfig: this.props.prettierConfig
     })
 
+    this.editor.getWrapperElement().style.fontFamily = normalizeEditorFontFamily(
+      this.props.fontFamily
+    )
+
     document.querySelector(
       '.CodeMirror-lint-markers'
     ).style.display = enableMarkdownLint ? 'inline-block' : 'none'
@@ -613,6 +617,9 @@ export default class CodeEditor extends React.Component {
       needRefresh = true
     }
     if (prevProps.fontFamily !== this.props.fontFamily) {
+      this.editor.getWrapperElement().style.fontFamily = normalizeEditorFontFamily(
+        this.props.fontFamily
+      )
       needRefresh = true
     }
     if (prevProps.keyMap !== this.props.keyMap) {

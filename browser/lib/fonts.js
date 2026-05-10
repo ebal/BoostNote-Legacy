@@ -7,8 +7,7 @@ const editorFonts = [
   { label: 'Cascadia Code', value: 'Cascadia Code' },
   { label: 'Source Code Pro', value: 'Source Code Pro' },
   { label: 'Ubuntu Mono', value: 'Ubuntu Mono' },
-  { label: 'Droid Sans Mono', value: 'Droid Sans Mono' },
-  { label: 'Custom…', value: '__custom__' }
+  { label: 'Droid Sans Mono', value: 'Droid Sans Mono' }
 ]
 
 module.exports = { editorFonts }

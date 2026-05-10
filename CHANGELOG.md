@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Common Changelog](https://common-changelog.org) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.6] - 2026-05-10
+
+### Fixed
+
+- Guard `spawnUpdate` against null dereference and replace hardcoded `styleSheets` index with a named reference ([`e3f7a46`](../../commit/e3f7a46)).
+- Fix `storageNoteMap` key construction, `folderNoteSet` initialization order, and remove spurious backspace key events from tag/note title editors ([`a8d8c1d`](../../commit/a8d8c1d)).
+
 ## [0.17.5] - 2026-05-10
 
 ### Fixed
@@ -172,6 +179,7 @@ The format is based on [Common Changelog](https://common-changelog.org) and this
 
 - Add update menu item with download confirmation dialog ([`85d09b3b`](../../commit/85d09b3b), [`553832bd`](../../commit/553832bd)).
 
+[0.17.6]: ../../compare/v0.17.5...v0.17.6
 [0.17.5]: ../../compare/v0.17.4...v0.17.5
 [0.17.4]: ../../compare/v0.17.3...v0.17.4
 [0.17.3]: ../../compare/v0.17.2...v0.17.3

@@ -36,6 +36,7 @@ This is the **legacy** branch of Boostnote — a markdown-first, open-source not
 
 | Version | What changed |
 |---------|-------------|
+| 0.17.4 | Fix Settings modal Escape crash with bound close method, add git tag on version bump |
 | 0.17.3 | Fix DevTools CSS source map warnings, add build-test-verify agent skill |
 | 0.17.2 | Fix font selection in Settings, fix Settings crash, remove Custom… option |
 | 0.17.1 | Prettier lint fix for UiTab.js editor font dropdown |

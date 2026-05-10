@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Common Changelog](https://common-changelog.org) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.4] - 2026-05-10
+
+### Fixed
+
+- Fix `TypeError: this.setState is not a function` when pressing Escape in Settings modal by binding `ModalBase.close` in the constructor ([`68b101c`](../../commit/68b101c)).
+
+### Changed
+
+- Update version-bump agent skill to automatically create annotated git tag on version bump ([`db10f63`](../../commit/db10f63)).
+
 ## [0.17.3] - 2026-05-10
 
 ### Fixed
@@ -156,6 +166,7 @@ The format is based on [Common Changelog](https://common-changelog.org) and this
 
 - Add update menu item with download confirmation dialog ([`85d09b3b`](../../commit/85d09b3b), [`553832bd`](../../commit/553832bd)).
 
+[0.17.4]: ../../compare/v0.17.3...v0.17.4
 [0.17.3]: ../../compare/v0.17.2...v0.17.3
 [0.17.0]: ../../compare/v0.16.9...v0.17.0
 [0.16.9]: ../../compare/v0.16.8...v0.16.9

@@ -1,125 +1,63 @@
 # AGENTS.md — BoostNote-Legacy
 
-## CRITICAL: Docker-only policy
+## Docker-only policy
 
-**NEVER run any npm, yarn, electron, grunt, or node command on the host machine.**
-All operations — dependency install, compile, test, lint, package — MUST run inside Docker.
-Local `node_modules/` is for the Linux Docker build only and is incompatible with the host OS.
-The only host commands allowed are `git`, `docker`, `codesign` (for exported .app bundles), and file editing.
+**NEVER run npm/yarn/electron/grunt/node on the host.** Local `node_modules/` is for the Linux Docker build only. Allowed host commands: `git`, `docker`, `codesign`.
 
-## What this is
+| Task | Command |
+|---|---|
+| Build (Intel) | `docker build --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) -t boostnote-legacy .` |
+| Build (arm64) | `docker build --platform linux/arm64 --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) -f Dockerfile.arm64 -t boostnote-legacy-arm64 .` |
+| Test all | `docker run --rm boostnote-legacy npm test` |
+| Lint | `docker run --rm boostnote-legacy npm run lint` |
+| Fix | `docker run --rm boostnote-legacy npm run fix` |
+| AVA only | `docker run --rm boostnote-legacy npm run ava` |
+| Jest only | `docker run --rm boostnote-legacy npm run jest` |
+| Compile (webpack) | `docker run --rm boostnote-legacy npm run compile` |
+| Export .app to host | `docker cp $(docker create --rm boostnote-legacy):/app/dist/Boostnote-darwin-x64 ./dist/` |
+| Dev | `docker run --rm boostnote-legacy npm run dev` (WDS :8080 + Electron HMR) |
 
-Legacy desktop note-taking app for programmers. Built with **Electron 11** (arm64 branch; Electron 5 on intel branch), **React 16 + Redux**, **Webpack 1**, **Babel 6**, **Stylus (CSS Modules)**, and **CodeMirror**. This is a deprecated codebase; the successor is BoostNote-App.
+Without `GIT_COMMIT` build-arg → About dialog shows "unknown".
+
+Node 8.17 (Docker) / 8.x required. Modern Node will fail.
 
 ## Architecture
 
-- **`index.js`** — Electron main entry. Handles Squirrel (Windows) auto-update lifecycle, then loads `lib/main-app.js`.
-- **`lib/`** — Electron main process: `main-app.js` (app lifecycle, update checker), `main-window.js` (BrowserWindow creation), `main-menu.js`, `ipcServer.js`, `touchbar-menu.js` (macOS Touch Bar).
-- **`browser/`** — React renderer process: `browser/main/index.js` is the webpack entry. `browser/main/store.js` is the Redux store (uses `connected-react-router` + Immutable.js). Contains React components and styles.
-- **`compiled/`** — Webpack build output (generated).
-- **`dist/`** — Packaged Electron app output (generated).
-- **`tests/`** — Mixed test suite: AVA for `*-test.js` files, Jest for component/unit tests.
-- **`config.json`** — Electron build configuration (electron-version, etc.).
-- **`locales/`** — Internationalization (i18n) files.
-- **`dev-scripts/dev.js`** — Dev server orchestrator, launched by `npm run dev`.
+- `index.js` → Squirrel lifecycle → `lib/main-app.js` (app ready, menu, IPC server)
+- `lib/` — main process: `main-window.js` (BrowserWindow), `main-menu.js`, `ipcServer.js`, `touchbar-menu.js`
+- `browser/` — renderer process, webpack entry `browser/main/index.js`
+- Redux store at `browser/main/store.js` — uses `browser/lib/Mutable.js` (wraps Immutable.js Map/Set)
+- Webpack aliases: `lib` → `./lib`, `browser` → `./browser`
+- `compiled/` — webpack output; `dist/` — packaged Electron app
 
-## Commands (all run inside Docker unless noted)
+## Test quirks
 
-| Container command | Host equivalent (DO NOT RUN) |
-|---|---|
-| `docker build --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) -t boostnote-legacy .` | *(build — Intel/amd64)* |
-| `docker run --rm boostnote-legacy npm run test` | `npm run test` |
-| `docker run --rm boostnote-legacy npm run lint` | `npm run lint` |
-| `docker run --rm boostnote-legacy npm run ava` | `npm run ava` |
-| `docker run --rm boostnote-legacy npm run jest` | `npm run jest` |
-| `docker run --rm boostnote-legacy npm run compile` | `npm run compile` |
-| `docker cp <container>:/app/dist ./dist/` | `grunt pre-build` |
-| `codesign --deep --force --sign - <app>` | `grunt build` (codesign step) |
+- `npm test` = `npm run ava && npm run jest` (sequential)
+- AVA picks `tests/**/*-test.js`; Jest picks everything else
+- AVA runs serially (`--serial`)
+- **Pre-existing failures (ignore):** Jest picks up test files inside `dist/Boostnote-darwin-*/` → fail with environment mismatch. `createNote`/`createNoteFromUrl` Jest tests fail with "Target folder doesn't exist" (test-data issue).
 
-> **Note:** Always pass `--build-arg GIT_COMMIT=$(git rev-parse --short HEAD)` when building. Without it the About dialog shows `unknown` as the commit hash.
+## Toolchain
 
-## Apple Silicon build (arm64 branch)
+- Webpack 1 + Babel 6 — loader chains use `!` syntax (`style!css?modules!stylus`)
+- Many deps externaled (electron, react, redux, codemirror, lodash, moment, prettier) — loaded via `<script>` tags, not bundled (see `webpack-skeleton.js`)
+- CSS Modules via `react-css-modules` + Stylus; class pattern `[name]__[local]___[path]`
+- **Webpack `process` shim:** Webpack 1 injects `process.versions = {}`. Any dep reading `process.versions.node` at module load (e.g. `fs-extra@7+`) crashes. Pin such deps or external them.
 
-`Dockerfile.arm64` runs the build container natively on Apple Silicon (linux/arm64) using `node:14-bullseye`. Produces a native `darwin/arm64` binary — Electron 11.5.0 has native arm64 darwin support.
+## Electron quirks
 
-```bash
-docker build --platform linux/arm64 \
-  --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) \
-  -f Dockerfile.arm64 -t boostnote-legacy-arm64 .
-```
+- **Branch difference:** arm64 = Electron 11.5.0 (native darwin/arm64); intel = Electron 5.0.13
+- **Dialog API:** Electron 9+ removed sync/callback forms. Use `showMessageBoxSync` and Promise-based `showOpenDialog`/`showSaveDialog`
+- **`webPreferences`:** `enableRemoteModule: true`, `nodeIntegration: true`, `contextIsolation: false` required
+- `secret/auth_code.json` needed for codesigning; absent → skips silently
 
-Export after build:
+## Prettier / lint
 
-```bash
-docker cp $(docker create --rm boostnote-legacy-arm64):/app/dist/Boostnote-darwin-arm64 ./dist/
-```
-
-Tests:
-
-```bash
-docker run --platform linux/arm64 --rm boostnote-legacy-arm64 npm run test
-```
-
-## Export after every build
-
-Every time a Docker build completes, the packaged `.app` **must** be copied to the host `./dist/` directory:
-
-```bash
-docker cp $(docker create --rm boostnote-legacy):/app/dist/Boostnote-darwin-x64 ./dist/
-```
-
-Alternatively, after `docker build`:
-
-```bash
-docker run --rm -d --name boostnote-tmp boostnote-legacy sleep 1 && \
-docker cp boostnote-tmp:/app/dist/Boostnote-darwin-x64 ./dist/ && \
-docker kill boostnote-tmp
-```
-
-This ensures the host `./dist/` always reflects the latest build.
-
-## Key quirks
-
-- **Two test frameworks** run sequentially. AVA tests live in `tests/**/*-test.js`. Jest picks up remaining test files.
-- **Webpack 1 + Babel 6** — very old toolchain. Loader syntax uses `!` chains (e.g. `style!css?modules!stylus`).
-- **Webpack aliases**: `lib` resolves to `./lib`, `browser` resolves to `./browser`. Used in imports throughout.
-- **CSS Modules** via `react-css-modules` and Stylus. Class names pattern: `[name]__[local]___[path]`.
-- **`secret/auth_code.json`** is required for code signing. Absent in dev — codesign tasks silently skip.
-- **Electron 11.5.0** is pinned in `config.electron-version` and `devDependencies` (arm64 branch). Intel branch uses Electron 5.0.13.
-- **`enableRemoteModule: true`** required in BrowserWindow webPreferences — Electron 11 disables `remote` module by default.
-- **Dialog API**: `showMessageBox`/`showOpenDialog`/`showSaveDialog` with sync return-value usage migrated to `showMessageBoxSync`; callback forms migrated to Promise (Electron 9+ removed callback/sync API).
-- **HMR requires manual refresh** when editing constructors or adding new CSS classes (they're registered at construction time).
-- **Husky pre-commit hook** runs `npm run lint`.
-- **Stylus** uses `nib` for mixins; global styles imported via `browser/styles/index.styl`.
-- **Many libraries externaled** (prettier, electron, lodash, moment, react, redux, codemirror, etc.) — they're loaded via `<script>` tags in the HTML, not bundled. See `webpack-skeleton.js`.
-- **Docker-only build workflow** — UPGRADE.md mandates building only through Docker (Node 8.17, Debian Stretch). The `Dockerfile` handles the full compile + package pipeline.
-- **Immutable.js-lite** — Redux store uses `browser/lib/Mutable.js` wrapping `immutable` Map/Set, not plain JS objects.
-- **`locales/` directory** — i18n translations for multiple languages; loaded via `browser/lib/i18n.js`.
-- **Webpack 1 `process` shim** — Webpack 1 injects its own `process` polyfill into the renderer bundle. The shim has `process.versions = {}`, so `process.versions.node` is `undefined`. Any dependency that reads `process.versions.node` at module load time (e.g. `fs-extra@7+` with its `nodeSupportsBigInt()` check) will crash at runtime with `Cannot read property 'split' of undefined`. Cap such dependencies below the version that introduced the check, or ensure they are excluded from the webpack bundle entirely.
-- **Prettier version mismatch (host vs Docker)** — `package.json` specifies `prettier@^1.19.1`; Docker's `yarn install` resolves this correctly. The host `node_modules/` (never updated via yarn — Docker-only policy) retains an older `1.18.x` prettier that has opposite template-literal formatting opinions. Running `npm run lint` on the host passes; running it inside Docker shows 6 pre-existing `prettier/prettier` errors in `MarkdownPreview.js`, `markdown.js`, and `store.js`. These are unfixable without running yarn on the host. Do not attempt to resolve them by reformatting — the two versions will keep reverting each other.
-
-## Style
-
-- ESLint: extends `standard` + `standard-jsx` + `plugin:react/recommended` + `prettier`
+- ESLint: `standard` + `standard-jsx` + `plugin:react/recommended` + `prettier`
 - Prettier: `singleQuote: true`, `semi: false`, `jsxSingleQuote: true`
-- All ESLint warnings (no-unused-vars, no-undef, etc.) are warnings not errors.
+- Unused vars/undef are warnings, not errors
+- **Pre-existing:** 6 `prettier/prettier` errors inside Docker (prettier 1.19) in `MarkdownPreview.js`, `markdown.js`, `store.js`. Host prettier (1.18) accepts them. Do NOT fix — versions keep reverting each other.
 
-## Node version
+## HMR dev notes
 
-Docs specify **Node 8.x / npm 6.x**. Modern Node versions will fail. **Never run npm/yarn on the host.** The Docker container provides the correct Node 8.17 environment.
-
-## Upgrade log
-
-Maintain `UPGRADE.md`.
-
-After every successful iteration, append:
-
-- source version
-- target version
-- changed files
-- build command
-- test command
-- verification result
-- known issues
-- rollback commit
-
+Manual refresh needed when editing constructors or adding CSS classes (registered at construction time).

@@ -15,7 +15,7 @@
 
 ARG BUILDARCH=amd64
 
-FROM node:14-bullseye AS base
+FROM node:20-bookworm AS base
 
 RUN apt-get update && apt-get install -y \
   python3 \
@@ -29,8 +29,8 @@ RUN apt-get update && apt-get install -y \
 FROM base AS deps
 WORKDIR /app
 COPY package.json yarn.lock ./
-# node:14-bullseye ships yarn; skip reinstalling it to avoid symlink conflict
-RUN npm install -g npm@6 grunt-cli@1.3.2 && \
+# node:20-bookworm ships yarn; skip reinstalling it to avoid symlink conflict
+RUN npm install -g grunt-cli@1.3.2 && \
   git config --global url."https://".insteadOf git:// && \
   yarn install --ignore-engines
 

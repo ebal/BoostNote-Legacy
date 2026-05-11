@@ -20,7 +20,7 @@
 
 Without `GIT_COMMIT` build-arg → About dialog shows "unknown".
 
-Node 14 (bullseye) inside Docker. Unified Dockerfile supports both amd64 and arm64 builds.
+Node 22 (bookworm) inside Docker. Unified Dockerfile supports both amd64 and arm64 builds.
 
 ## Architecture
 
@@ -31,12 +31,14 @@ Node 14 (bullseye) inside Docker. Unified Dockerfile supports both amd64 and arm
 - Webpack aliases: `lib` → `./lib`, `browser` → `./browser`
 - `compiled/` — webpack output; `dist/` — packaged Electron app
 
+- **`global.navigator` on Node 22+:** `global.navigator` is now a read-only getter (WinterCG). Test files that do `global.navigator = window.navigator` crash. Use `Object.defineProperty(global, 'navigator', { get: () => window.navigator, configurable: true })` instead.
+
 ## Test quirks
 
 - `npm test` = `npm run ava && npm run jest` (sequential)
 - AVA picks `tests/**/*-test.js`; Jest picks everything else
 - AVA runs serially (`--serial`)
-- **Pre-existing failures (ignore):** Jest picks up test files inside `dist/Boostnote-darwin-*/` → fail with environment mismatch. `createNote`/`createNoteFromUrl` Jest tests fail with "Target folder doesn't exist" (test-data issue).
+- **Pre-existing failures (ignore):** Jest picks up test files inside `dist/Boostnote-darwin-*/` → fail with environment mismatch. `attachmentManagement` Jest test fails with `fs-extra`/`graceful-fs` incompatibility. `normalizeEditorFontFamily` test fails with CSS quoting mismatch.
 
 ## Toolchain
 
@@ -56,7 +58,7 @@ Node 14 (bullseye) inside Docker. Unified Dockerfile supports both amd64 and arm
 - ESLint: `standard` + `standard-jsx` + `plugin:react/recommended` + `prettier`
 - Prettier: `singleQuote: true`, `semi: false`, `jsxSingleQuote: true`
 - Unused vars/undef are warnings, not errors
-- **Pre-existing:** 6 `prettier/prettier` errors inside Docker (prettier 1.19) in `MarkdownPreview.js`, `markdown.js`, `store.js`. Host prettier (1.18) accepts them. Do NOT fix — versions keep reverting each other.
+- **Pre-existing:** 7 `prettier/prettier` errors inside Docker (prettier 1.19) in `MarkdownPreview.js` (1), `contextMenuBuilder.js` (1), `markdown.js` (4), `store.js` (1). Host prettier (1.18) accepts them. Do NOT fix — versions keep reverting each other.
 
 ## HMR dev notes
 

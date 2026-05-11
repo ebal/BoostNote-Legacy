@@ -2,7 +2,10 @@ const { findStorage } = require('browser/lib/findStorage')
 
 global.document = require('jsdom').jsdom('<body></body>')
 global.window = document.defaultView
-global.navigator = window.navigator
+Object.defineProperty(global, 'navigator', {
+  get: () => window.navigator,
+  configurable: true
+})
 
 const Storage = require('dom-storage')
 const localStorage = (window.localStorage = global.localStorage = new Storage(

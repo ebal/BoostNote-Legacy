@@ -15,7 +15,7 @@
 
 ARG BUILDARCH=amd64
 
-FROM node:20-bookworm AS base
+FROM node:22-bookworm AS base
 
 RUN apt-get update && apt-get install -y \
   python3 \

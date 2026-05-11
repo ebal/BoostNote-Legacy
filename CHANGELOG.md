@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Common Changelog](https://common-changelog.org) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.9] - 2026-05-11
+
+### Added
+
+- Add GitHub Actions workflow to build macOS DMGs on tag push ([`439c958`](../../commit/439c958)).
+
+### Changed
+
+- Upgrade Docker base image from `node:14-bullseye` to `node:22-bookworm` ([`7571686`](../../commit/7571686), [`8b3d171`](../../commit/8b3d171)).
+- Bump `cross-env` ^5.2.0 → ^7.0.3 and `concurrently` ^5.3.0 → ^9.1.2 ([`8b3d171`](../../commit/8b3d171)).
+
+### Fixed
+
+- Fix test compatibility with Node 22 by replacing `global.navigator` assignment with `Object.defineProperty` getter in 18 test files ([`8b3d171`](../../commit/8b3d171)).
+
 ## [0.17.8] - 2026-05-10
 
 ### Fixed
@@ -191,6 +206,7 @@ The format is based on [Common Changelog](https://common-changelog.org) and this
 
 - Add update menu item with download confirmation dialog ([`85d09b3b`](../../commit/85d09b3b), [`553832bd`](../../commit/553832bd)).
 
+[0.17.9]: ../../compare/v0.17.8...v0.17.9
 [0.17.8]: ../../compare/v0.17.7...v0.17.8
 [0.17.7]: ../../compare/v0.17.6...v0.17.7
 [0.17.6]: ../../compare/v0.17.5...v0.17.6

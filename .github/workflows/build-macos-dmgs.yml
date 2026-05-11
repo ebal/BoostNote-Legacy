@@ -1,4 +1,4 @@
-name: Build macOS DMGs
+name: Build macOS App Packages
 
 on:
   workflow_dispatch: {}
@@ -7,21 +7,25 @@ on:
       - 'v*'
 
 jobs:
-  build-macos-dmgs:
-    name: Build macOS DMGs
-    runs-on: macos-latest
+  build-linux:
+    name: Build Linux app packages in Docker
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up QEMU for cross-platform Docker builds
-        uses: docker/setup-qemu-action@v4
+        uses: docker/setup-qemu-action@v3
         with:
-          platforms: linux/arm64
+          platforms: linux/amd64,linux/arm64
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
+      - name: Compute version
+        id: version
+        run: echo "VERSION=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
 
       - name: Build Intel macOS app package in Docker
         run: |
@@ -77,6 +81,14 @@ jobs:
           }
           EOF
           appdmg dist/appdmg-arm64.json dist/Boostnote-${VERSION}-darwin-arm64.dmg
+
+      - name: Upload app packages as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: boostnote-macos-packages
+          path: |
+            dist/Boostnote-darwin-x64
+            dist/Boostnote-darwin-arm64
 
       - name: Upload DMG artifacts
         uses: actions/upload-artifact@v4

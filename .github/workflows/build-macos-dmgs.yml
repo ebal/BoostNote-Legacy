@@ -43,10 +43,6 @@ jobs:
           docker cp boostnote-arm64:/app/dist/Boostnote-darwin-arm64 ./dist/Boostnote-darwin-arm64
           docker rm boostnote-arm64
 
-      - name: Compute version
-        id: version
-        run: echo "VERSION=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
-
       - name: Install appdmg
         run: npm install -g appdmg
 

@@ -30,7 +30,7 @@ function execMainApp() {
     })
     updateProcess.on('close', function(code, signal) {
       if (code !== 0) {
-        error = new Error('Command failed: #{signal ? code}')
+        error = new Error('Command failed: ' + (signal != null ? signal : code))
         error.code = code
         error.stdout = stdout
       }

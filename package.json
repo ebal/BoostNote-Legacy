@@ -189,7 +189,6 @@
     "grunt-electron-installer-debian": "^0.5.0",
     "grunt-electron-installer-redhat": "^0.3.1"
   },
-  "optional": false,
   "ava": {
     "files": [
       "tests/**/*-test.js"

@@ -5,4 +5,6 @@ dist
 *.dmg
 *.zip
 .DS_Store
+secret
+coverage
 snap

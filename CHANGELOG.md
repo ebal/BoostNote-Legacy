@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Common Changelog](https://common-changelog.org) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.10] - 2026-05-13
+
+### Changed
+
+- Cleanup dead config, fix CoffeeScript string, normalize line endings ([`f97fbf9d`](../../commit/f97fbf9d)).
+- Fix GitHub Actions workflow to build macOS DMGs ([`a2f9c6ce`](../../commit/a2f9c6ce)).
+
+### Fixed
+
+- Remove duplicate step ID in build-macos-dmgs workflow ([`a3e3e32b`](../../commit/a3e3e32b)).
+
 ## [0.17.9] - 2026-05-11
 
 ### Added
@@ -206,6 +217,7 @@ The format is based on [Common Changelog](https://common-changelog.org) and this
 
 - Add update menu item with download confirmation dialog ([`85d09b3b`](../../commit/85d09b3b), [`553832bd`](../../commit/553832bd)).
 
+[0.17.10]: ../../compare/v0.17.9...v0.17.10
 [0.17.9]: ../../compare/v0.17.8...v0.17.9
 [0.17.8]: ../../compare/v0.17.7...v0.17.8
 [0.17.7]: ../../compare/v0.17.6...v0.17.7

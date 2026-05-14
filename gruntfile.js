@@ -261,12 +261,7 @@ module.exports = function(grunt) {
         grunt.task.run(['compile', 'pack:win', 'create-windows-installer'])
         break
       case 'osx':
-        grunt.task.run([
-          'compile',
-          'pack:osx',
-          'codesign',
-          'zip:osx'
-        ])
+        grunt.task.run(['compile', 'pack:osx', 'codesign', 'zip:osx'])
         break
       case 'linux':
         grunt.task.run([

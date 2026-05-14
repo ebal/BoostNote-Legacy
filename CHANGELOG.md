@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Common Changelog](https://common-changelog.org) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.16] - 2026-05-14
+
+### Removed
+
+- Remove dead `appdmg.json` (DMG creation config), `resources/dmg.icns` (DMG icon), and `resources/boostnote-install.png` (DMG background) — replaced by `.zip` artifact workflow.
+
+### Changed
+
+- Strip dead files from git history via `git-filter-repo` — reduces `.git` size from 23 MB to 18 MB (22 %).
+- Fix prettier formatting regression in gruntfile osx task sequence after removing `create-osx-installer`.
+
 ## [0.17.15] - 2026-05-14
 
 ### Changed
@@ -33,112 +44,112 @@ The format is based on [Common Changelog](https://common-changelog.org) and this
 
 ### Added
 
-- Add Linux x86_64 tar.gz to Docker build and CI workflow ([`341eea23`](../../commit/341eea23)).
+- Add Linux x86_64 tar.gz to Docker build and CI workflow ([`e7bf382c`](../../commit/e7bf382c)).
 
 ### Changed
 
-- Pin GHA runner from `ubuntu-latest` to `ubuntu-24.04` for deterministic builds ([`341eea23`](../../commit/341eea23)).
-- Bump GHA actions to Node 24 versions (checkout@v6, setup-qemu@v4, setup-buildx@v4, upload-artifact@v7) ([`341eea23`](../../commit/341eea23)).
-- Fix linux pack target icon from `.icns` to `.png` in gruntfile ([`341eea23`](../../commit/341eea23)).
+- Pin GHA runner from `ubuntu-latest` to `ubuntu-24.04` for deterministic builds ([`e7bf382c`](../../commit/e7bf382c)).
+- Bump GHA actions to Node 24 versions (checkout@v6, setup-qemu@v4, setup-buildx@v4, upload-artifact@v7) ([`e7bf382c`](../../commit/e7bf382c)).
+- Fix linux pack target icon from `.icns` to `.png` in gruntfile ([`e7bf382c`](../../commit/e7bf382c)).
 
 ### Fixed
 
-- Fix GitHub Actions workflow typo in getting version ([`7c524b08`](../../commit/7c524b08)).
+- Fix GitHub Actions workflow typo in getting version ([`fb55df08`](../../commit/fb55df08)).
 
 ## [0.17.10] - 2026-05-13
 
 ### Changed
 
-- Cleanup dead config, fix CoffeeScript string, normalize line endings ([`f97fbf9d`](../../commit/f97fbf9d)).
-- Fix GitHub Actions workflow to build macOS DMGs ([`a2f9c6ce`](../../commit/a2f9c6ce)).
+- Cleanup dead config, fix CoffeeScript string, normalize line endings ([`04e36acc`](../../commit/04e36acc)).
+- Fix GitHub Actions workflow to build macOS DMGs ([`693ee354`](../../commit/693ee354)).
 
 ### Fixed
 
-- Remove duplicate step ID in build-macos-dmgs workflow ([`a3e3e32b`](../../commit/a3e3e32b)).
+- Remove duplicate step ID in build-macos-dmgs workflow ([`d8d36a4d`](../../commit/d8d36a4d)).
 
 ## [0.17.9] - 2026-05-11
 
 ### Added
 
-- Add GitHub Actions workflow to build macOS DMGs on tag push ([`439c958`](../../commit/439c958)).
+- Add GitHub Actions workflow to build macOS DMGs on tag push ([`ce7872aa`](../../commit/ce7872aa)).
 
 ### Changed
 
-- Upgrade Docker base image from `node:14-bullseye` to `node:22-bookworm` ([`7571686`](../../commit/7571686), [`8b3d171`](../../commit/8b3d171)).
-- Bump `cross-env` ^5.2.0 → ^7.0.3 and `concurrently` ^5.3.0 → ^9.1.2 ([`8b3d171`](../../commit/8b3d171)).
+- Upgrade Docker base image from `node:14-bullseye` to `node:22-bookworm` ([`9e566c3d`](../../commit/9e566c3d), [`9b4e1908`](../../commit/9b4e1908)).
+- Bump `cross-env` ^5.2.0 → ^7.0.3 and `concurrently` ^5.3.0 → ^9.1.2 ([`9b4e1908`](../../commit/9b4e1908)).
 
 ### Fixed
 
-- Fix test compatibility with Node 22 by replacing `global.navigator` assignment with `Object.defineProperty` getter in 18 test files ([`8b3d171`](../../commit/8b3d171)).
+- Fix test compatibility with Node 22 by replacing `global.navigator` assignment with `Object.defineProperty` getter in 18 test files ([`9b4e1908`](../../commit/9b4e1908)).
 
 ## [0.17.8] - 2026-05-10
 
 ### Fixed
 
-- Add layout styles for Preferences modal Info tab and Snippet tab to fix content positioning ([`f4f9f0c`](../../commit/f4f9f0c)).
+- Add layout styles for Preferences modal Info tab and Snippet tab to fix content positioning ([`aea7dfd5`](../../commit/aea7dfd5)).
 
 ## [0.17.7] - 2026-05-10
 
 ### Fixed
 
-- Strip hash fragment from `file://` URIs in context menu builder to prevent `fs.lstatSync` lookup failure on local files with anchors ([`83c71ba`](../../commit/83c71ba)).
+- Strip hash fragment from `file://` URIs in context menu builder to prevent `fs.lstatSync` lookup failure on local files with anchors ([`0060dbdf`](../../commit/0060dbdf)).
 
 ## [0.17.6] - 2026-05-10
 
 ### Fixed
 
-- Guard `spawnUpdate` against null dereference and replace hardcoded `styleSheets` index with a named reference ([`e3f7a46`](../../commit/e3f7a46)).
-- Fix `storageNoteMap` key construction, `folderNoteSet` initialization order, and remove spurious backspace key events from tag/note title editors ([`a8d8c1d`](../../commit/a8d8c1d)).
+- Guard `spawnUpdate` against null dereference and replace hardcoded `styleSheets` index with a named reference ([`21950811`](../../commit/21950811)).
+- Fix `storageNoteMap` key construction, `folderNoteSet` initialization order, and remove spurious backspace key events from tag/note title editors ([`ad275f69`](../../commit/ad275f69)).
 
 ## [0.17.5] - 2026-05-10
 
 ### Fixed
 
-- Remove dead "File → Update" menu item and auto-update IPC stubs (`update-check`, `update-app-confirm`, `update-cancel`, `update-download-confirm`) that were no-ops ([`93af875`](../../commit/93af875)).
+- Remove dead "File → Update" menu item and auto-update IPC stubs (`update-check`, `update-app-confirm`, `update-cancel`, `update-download-confirm`) that were no-ops ([`fed0e582`](../../commit/fed0e582)).
 
 ## [0.17.4] - 2026-05-10
 
 ### Fixed
 
-- Fix `TypeError: this.setState is not a function` when pressing Escape in Settings modal by binding `ModalBase.close` in the constructor ([`68b101c`](../../commit/68b101c)).
+- Fix `TypeError: this.setState is not a function` when pressing Escape in Settings modal by binding `ModalBase.close` in the constructor ([`a3f68cc4`](../../commit/a3f68cc4)).
 
 ### Changed
 
-- Update version-bump agent skill to automatically create annotated git tag on version bump ([`db10f63`](../../commit/db10f63)).
+- Update version-bump agent skill to automatically create annotated git tag on version bump ([`56ef200a`](../../commit/56ef200a)).
 
 ## [0.17.3] - 2026-05-10
 
 ### Fixed
 
-- Fix DevTools CSS source map warnings by removing `?sourceMap` from stylus loader in production webpack config; style-loader was emitting `sourceMappingURL` comments for files that were never generated ([`d8bde12`](../../commit/d8bde12)).
+- Fix DevTools CSS source map warnings by removing `?sourceMap` from stylus loader in production webpack config; style-loader was emitting `sourceMappingURL` comments for files that were never generated ([`9d9a5090`](../../commit/9d9a5090)).
 
 ### Changed
 
-- Add `build-test-verify` agent skill for Docker-based build, test, and export workflow ([`d8bde12`](../../commit/d8bde12)).
+- Add `build-test-verify` agent skill for Docker-based build, test, and export workflow ([`9d9a5090`](../../commit/9d9a5090)).
 
 ## [0.17.2] - 2026-05-10
 
 ### Fixed
 
-- Fix font selection in Settings: apply `fontFamily` directly to CodeMirror wrapper element via `getWrapperElement().style.fontFamily` to circumvent CodeMirror's CSS `monospace` override ([`6f6e314`](../../commit/6f6e314)).
-- Fix CSS quoting in `normalizeEditorFontFamily`: wrap multi-word font names (e.g. `'JetBrains Mono'`) in quotes so CSS parses them as single font family ([`6f6e314`](../../commit/6f6e314)).
-- Fix crash in Settings when changing any option: guard `this.refs.uiLanguage` which is undefined when language select is hidden (only English) ([`f0ee976`](../../commit/f0ee976)).
+- Fix font selection in Settings: apply `fontFamily` directly to CodeMirror wrapper element via `getWrapperElement().style.fontFamily` to circumvent CodeMirror's CSS `monospace` override ([`ea1d9289`](../../commit/ea1d9289)).
+- Fix CSS quoting in `normalizeEditorFontFamily`: wrap multi-word font names (e.g. `'JetBrains Mono'`) in quotes so CSS parses them as single font family ([`ea1d9289`](../../commit/ea1d9289)).
+- Fix crash in Settings when changing any option: guard `this.refs.uiLanguage` which is undefined when language select is hidden (only English) ([`191157ba`](../../commit/191157ba)).
 
 ### Removed
 
-- Remove "Custom…" option from Editor Font Family dropdown; font dropdown now lists only concrete fonts ([`6f6e314`](../../commit/6f6e314)).
+- Remove "Custom…" option from Editor Font Family dropdown; font dropdown now lists only concrete fonts ([`ea1d9289`](../../commit/ea1d9289)).
 
 ## [0.17.1] - 2026-05-10
 
 ### Fixed
 
-- Resolve 3 prettier formatting errors in `UiTab.js` (editor font dropdown introduced in 0.17.0) to restore zero-lint-warning baseline ([`6ef02d3`](../../commit/6ef02d3)).
+- Resolve 3 prettier formatting errors in `UiTab.js` (editor font dropdown introduced in 0.17.0) to restore zero-lint-warning baseline ([`6d8103d4`](../../commit/6d8103d4)).
 
 ## [0.17.0] - 2026-05-10
 
 ### Removed
 
-- Remove all non-English interface languages from Settings → Interface → Language. Only English remains. Language dropdown is hidden when only one language is available ([`07096e6`](../../commit/07096e6)).
+- Remove all non-English interface languages from Settings → Interface → Language. Only English remains. Language dropdown is hidden when only one language is available ([`91600e35`](../../commit/91600e35)).
 - Delete 19 locale entries from `Languages.js` — all languages except English stripped from the UI selector.
 
 ## [0.16.9] - 2026-05-10
@@ -158,7 +169,7 @@ The format is based on [Common Changelog](https://common-changelog.org) and this
 
 ### Changed
 
-- Unify `Dockerfile` to support both amd64 (Intel) and arm64 (Apple Silicon) builds via `BUILDARCH` build arg. Base image updated from `node:8.17` to `node:14-bullseye` (matching `Dockerfile.arm64`). Removed separate `Dockerfile.arm64` ([`829cd67d`](../../commit/829cd67d)).
+- Unify `Dockerfile` to support both amd64 (Intel) and arm64 (Apple Silicon) builds via `BUILDARCH` build arg. Base image updated from `node:8.17` to `node:14-bullseye` (matching `Dockerfile.arm64`). Removed separate `Dockerfile.arm64` ([`0ceff414`](../../commit/0ceff414)).
 - Merge `arm64` and `intel` branches into `main`; delete both branches locally and on remote.
 
 ## [0.16.7] - 2026-05-08
@@ -205,59 +216,60 @@ The format is based on [Common Changelog](https://common-changelog.org) and this
 
 ### Fixed
 
-- Replace `ReactDOM.render()` return-value pattern with `React.createRef()` in `modal.js` ([`71ad006`](../../commit/71ad0060)). `ModalBase.close()` now uses `this.setState()` instead of a circular module-level reference.
+- Replace `ReactDOM.render()` return-value pattern with `React.createRef()` in `modal.js` ([`7520e750`](../../commit/7520e750)). `ModalBase.close()` now uses `this.setState()` instead of a circular module-level reference.
 
 ### Changed
 
-- Rename deprecated `componentWillReceiveProps` / `componentWillUpdate` to `UNSAFE_*` in `ColorPicker`, `SnippetTab`, `SnippetNoteDetail`, `NoteList` ([`71ad006`](../../commit/71ad0060)).
-- Add `/* global _ */` to `formatHTML.js` — lodash is a runtime global loaded via `<script>` tag, not a bundle import ([`71ad006`](../../commit/71ad0060)).
-- Disable auto-update: removed `electron-gh-releases` dependency and all updater code from `main-app.js`; manual Update menu item responds with "Auto-update is disabled in this build" ([`23e0f2da`](../../commit/23e0f2da)).
-- Show git commit hash in Help → About dialog (`Version: 0.16.4 (abcd1234)`). Requires `--build-arg GIT_COMMIT=$(git rev-parse --short HEAD)` at Docker build time ([`8fda299b`](../../commit/8fda299b)).
+- Rename deprecated `componentWillReceiveProps` / `componentWillUpdate` to `UNSAFE_*` in `ColorPicker`, `SnippetTab`, `SnippetNoteDetail`, `NoteList` ([`7520e750`](../../commit/7520e750)).
+- Add `/* global _ */` to `formatHTML.js` — lodash is a runtime global loaded via `<script>` tag, not a bundle import ([`7520e750`](../../commit/7520e750)).
+- Disable auto-update: removed `electron-gh-releases` dependency and all updater code from `main-app.js`; manual Update menu item responds with "Auto-update is disabled in this build" ([`e2a9d364`](../../commit/e2a9d364)).
+- Show git commit hash in Help → About dialog (`Version: 0.16.4 (abcd1234)`). Requires `--build-arg GIT_COMMIT=$(git rev-parse --short HEAD)` at Docker build time ([`94ea5189`](../../commit/94ea5189)).
 
 ## [0.16.3] - 2026-05-08
 
 ### Fixed
 
-- Restore checkbox rendering in markdown preview after markdown-it upgrade to 12.x ([`85d6efc`](../../commit/85d6efc4)). The `state.parentType` API changed between markdown-it 6 and 12; detection now uses token-stack inspection instead.
-- Preserve `yarn.lock` resolved by `yarn install` across `COPY . .` in Docker build ([`1115f102`](../../commit/1115f102)).
+- Restore checkbox rendering in markdown preview after markdown-it upgrade to 12.x ([`da3b290e`](../../commit/da3b290e)). The `state.parentType` API changed between markdown-it 6 and 12; detection now uses token-stack inspection instead.
+- Preserve `yarn.lock` resolved by `yarn install` across `COPY . .` in Docker build ([`a5015282`](../../commit/a5015282)).
 
 ### Changed
 
-- Upgrade runtime and test dependencies to latest compatible versions ([`b77ad6bf`](../../commit/b77ad6bf), [`ce358e32`](../../commit/ce358e32)). Pins `fs-extra@^5`, `electron-packager@^12` and `cross-env@^5` due to engine constraints in the Webpack 1 / Node 8 build environment.
-- Update KaTeX snapshot for 0.16.x HTML output (`mathdefault` → `mathnormal`, rounded decimal values) ([`85d6efc`](../../commit/85d6efc4)).
-- Replace deprecated `ReactDOM.findDOMNode` with `React.createRef()` in `FolderItem` color-picker ([`85d6efc`](../../commit/85d6efc4)).
-- Document Webpack 1 `process` shim constraint in `AGENTS.md` ([`7db55cbe`](../../commit/7db55cbe)).
+- Upgrade runtime and test dependencies to latest compatible versions ([`a0d3dc4f`](../../commit/a0d3dc4f), [`ff5cc55e`](../../commit/ff5cc55e)). Pins `fs-extra@^5`, `electron-packager@^12` and `cross-env@^5` due to engine constraints in the Webpack 1 / Node 8 build environment.
+- Update KaTeX snapshot for 0.16.x HTML output (`mathdefault` → `mathnormal`, rounded decimal values) ([`da3b290e`](../../commit/da3b290e)).
+- Replace deprecated `ReactDOM.findDOMNode` with `React.createRef()` in `FolderItem` color-picker ([`da3b290e`](../../commit/da3b290e)).
+- Document Webpack 1 `process` shim constraint in `AGENTS.md` ([`ac5aa149`](../../commit/ac5aa149)).
 
 ### Removed
 
-- Remove **For Team (BoostHub)** menu entry and all related code ([`710c4ab8`](../../commit/710c4ab8)).
+- Remove **For Team (BoostHub)** menu entry and all related code ([`2538915c`](../../commit/2538915c)).
 
 ## [0.16.2] - 2026-05-08
 
 ### Fixed
 
-- Enable `nodeIntegration` and set `contextIsolation: false` in `BrowserWindow` for Electron 5 compatibility ([`c3da0b7a`](../../commit/c3da0b7a)).
+- Enable `nodeIntegration` and set `contextIsolation: false` in `BrowserWindow` for Electron 5 compatibility ([`caef2e81`](../../commit/caef2e81)).
 
 ### Changed
 
-- Upgrade Electron from 1.x to **5.0.13** (Node.js 12.0.0, Chromium 73) ([`686953ab`](../../commit/686953ab)).
-- Rewrite `Dockerfile` with multi-stage build (`base` → `deps` → `build`) for reproducible lockfile handling ([`686953ab`](../../commit/686953ab)).
-- Rewrite `yarn.lock` resolved URLs from Taobao registry to npmjs.org ([`b77ad6bf`](../../commit/b77ad6bf)).
+- Upgrade Electron from 1.x to **5.0.13** (Node.js 12.0.0, Chromium 73) ([`31b87e96`](../../commit/31b87e96)).
+- Rewrite `Dockerfile` with multi-stage build (`base` → `deps` → `build`) for reproducible lockfile handling ([`31b87e96`](../../commit/31b87e96)).
+- Rewrite `yarn.lock` resolved URLs from Taobao registry to npmjs.org ([`a0d3dc4f`](../../commit/a0d3dc4f)).
 
 ## [0.16.1] - 2020-09-04
 
 ### Fixed
 
-- Fix unwanted deletion of attachments ([`8958e67f`](../../commit/8958e67f)).
-- Fix Cancel button in update dialog ([`3e405e1a`](../../commit/3e405e1a)).
-- Fix Analytics save bug ([`2603dfc1`](../../commit/2603dfc1)).
-- Fix AutoUpdate not being auto-saved ([`2df59060`](../../commit/2df59060)).
-- Avoid conflicting styles between inline code and code blocks ([`58c4a78b`](../../commit/58c4a78b)).
+- Fix unwanted deletion of attachments ([`03495fed`](../../commit/03495fed)).
+- Fix Cancel button in update dialog ([`910b8f1b`](../../commit/910b8f1b)).
+- Fix Analytics save bug ([`790419ac`](../../commit/790419ac)).
+- Fix AutoUpdate not being auto-saved ([`66681dbc`](../../commit/66681dbc)).
+- Avoid conflicting styles between inline code and code blocks ([`8706886c`](../../commit/8706886c)).
 
 ### Added
 
-- Add update menu item with download confirmation dialog ([`85d09b3b`](../../commit/85d09b3b), [`553832bd`](../../commit/553832bd)).
+- Add update menu item with download confirmation dialog ([`25c97930`](../../commit/25c97930), [`b74f54ec`](../../commit/b74f54ec)).
 
+[0.17.16]: ../../compare/v0.17.15...v0.17.16
 [0.17.15]: ../../compare/v0.17.14...v0.17.15
 [0.17.14]: ../../compare/v0.17.13...v0.17.14
 [0.17.13]: ../../compare/v0.17.12...v0.17.13

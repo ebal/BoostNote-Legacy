@@ -10,18 +10,20 @@ jobs:
   build-linux:
     name: Build Linux app packages in Docker
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up QEMU for cross-platform Docker builds
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
         with:
           platforms: linux/amd64,linux/arm64
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Compute version
         id: version
@@ -81,7 +83,7 @@ jobs:
           appdmg dist/appdmg-arm64.json dist/Boostnote-${VERSION}-darwin-arm64.dmg
 
       - name: Upload app packages as artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: boostnote-macos-packages
           path: |
@@ -89,7 +91,7 @@ jobs:
             dist/Boostnote-darwin-arm64
 
       - name: Upload DMG artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: boostnote-macos-dmgs
           path: |

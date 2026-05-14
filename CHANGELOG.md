@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Common Changelog](https://common-changelog.org) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.15] - 2026-05-14
+
+### Changed
+
+- Rename `readme.md` to `README.md` for case-correct filename on case-sensitive filesystems.
+- Update version-bump skill references from `readme.md` to `README.md`.
+
 ## [0.17.14] - 2026-05-14
 
 ### Removed
@@ -251,6 +258,7 @@ The format is based on [Common Changelog](https://common-changelog.org) and this
 
 - Add update menu item with download confirmation dialog ([`85d09b3b`](../../commit/85d09b3b), [`553832bd`](../../commit/553832bd)).
 
+[0.17.15]: ../../compare/v0.17.14...v0.17.15
 [0.17.14]: ../../compare/v0.17.13...v0.17.14
 [0.17.13]: ../../compare/v0.17.12...v0.17.13
 [0.17.12]: ../../compare/v0.17.10...v0.17.12

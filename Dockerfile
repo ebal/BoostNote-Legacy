@@ -11,6 +11,7 @@
 #
 # Export:
 #   docker cp $(docker create --rm boostnote-legacy):/app/dist/Boostnote-darwin-x64 ./dist/
+#   docker cp $(docker create --rm boostnote-legacy):/app/dist/Boostnote-linux-x64.tar.gz ./dist/
 #   docker cp $(docker create --rm boostnote-legacy-arm64):/app/dist/Boostnote-darwin-arm64 ./dist/
 
 ARG BUILDARCH=amd64
@@ -57,7 +58,13 @@ RUN npm run compile && \
   fi && \
   PACK_OUT_DIR=/build/out grunt pack:$PACK_TARGET && \
   mkdir -p /app/dist && \
-  cp -r /build/out/Boostnote-darwin-$ARCH_SUFFIX /app/dist/
+  cp -r /build/out/Boostnote-darwin-$ARCH_SUFFIX /app/dist/ && \
+  cd /build/app && \
+  PACK_OUT_DIR=/build/out-linux grunt pack:linux && \
+  mkdir -p /app/dist && \
+  tar -czf /app/dist/Boostnote-linux-x64.tar.gz -C /build/out-linux/Boostnote-linux-x64 .
 
-# Output: /app/dist/Boostnote-darwin-{x64,arm64}/Boostnote.app
+# Output:
+#   /app/dist/Boostnote-darwin-{x64,arm64}/Boostnote.app
+#   /app/dist/Boostnote-linux-x64.tar.gz
 CMD ["sh", "-c", "ls -la dist/"]

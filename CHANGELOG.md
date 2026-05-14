@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Common Changelog](https://common-changelog.org) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.12] - 2026-05-14
+
+### Added
+
+- Add Linux x86_64 tar.gz to Docker build and CI workflow ([`341eea23`](../../commit/341eea23)).
+
+### Changed
+
+- Pin GHA runner from `ubuntu-latest` to `ubuntu-24.04` for deterministic builds ([`341eea23`](../../commit/341eea23)).
+- Bump GHA actions to Node 24 versions (checkout@v6, setup-qemu@v4, setup-buildx@v4, upload-artifact@v7) ([`341eea23`](../../commit/341eea23)).
+- Fix linux pack target icon from `.icns` to `.png` in gruntfile ([`341eea23`](../../commit/341eea23)).
+
+### Fixed
+
+- Fix GitHub Actions workflow typo in getting version ([`7c524b08`](../../commit/7c524b08)).
+
 ## [0.17.10] - 2026-05-13
 
 ### Changed
@@ -217,6 +233,7 @@ The format is based on [Common Changelog](https://common-changelog.org) and this
 
 - Add update menu item with download confirmation dialog ([`85d09b3b`](../../commit/85d09b3b), [`553832bd`](../../commit/553832bd)).
 
+[0.17.12]: ../../compare/v0.17.10...v0.17.12
 [0.17.10]: ../../compare/v0.17.9...v0.17.10
 [0.17.9]: ../../compare/v0.17.8...v0.17.9
 [0.17.8]: ../../compare/v0.17.7...v0.17.8

@@ -119,7 +119,7 @@ module.exports = function(grunt) {
       prune: true,
       overwrite: true,
       out: outDir,
-      ignore: /node_modules\/ace-builds\/(?!src-min)|node_modules\/ace-builds\/(?=src-min-noconflict)|node_modules\/devicon\/icons|^\/browser|^\/secret|\.babelrc|\.gitignore|^\/\.gitmodules|^\/gruntfile|^\/readme.md|^\/webpack|^\/appdmg\.json|^\/node_modules\/grunt/
+      ignore: /node_modules\/ace-builds\/(?!src-min)|node_modules\/ace-builds\/(?=src-min-noconflict)|node_modules\/devicon\/icons|^\/browser|^\/secret|\.babelrc|\.gitignore|^\/\.gitmodules|^\/gruntfile|^\/readme.md|^\/webpack|^\/node_modules\/grunt/
     }
     switch (platform) {
       case 'win':
@@ -216,22 +216,6 @@ module.exports = function(grunt) {
     )
   })
 
-  grunt.registerTask('create-osx-installer', function() {
-    var done = this.async()
-    var execPath = 'appdmg appdmg.json dist/Boostnote-mac.dmg'
-    grunt.log.writeln(execPath)
-    ChildProcess.exec(execPath, function(err, stdout, stderr) {
-      grunt.log.writeln(stdout)
-      if (err) {
-        grunt.log.writeln(err)
-        grunt.log.writeln(stderr)
-        done(false)
-        return
-      }
-      done()
-    })
-  })
-
   grunt.registerTask('zip', function(platform) {
     var done = this.async()
     switch (platform) {
@@ -281,7 +265,6 @@ module.exports = function(grunt) {
           'compile',
           'pack:osx',
           'codesign',
-          'create-osx-installer',
           'zip:osx'
         ])
         break

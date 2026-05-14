@@ -180,8 +180,7 @@ module.exports = function(grunt) {
       case 'linux':
         Object.assign(opts, {
           platform: 'linux',
-          icon: path.join(__dirname, 'resources/app.icns'),
-          appCategoryType: 'public.app-category.developer-tools'
+          icon: path.join(__dirname, 'resources/app.png')
         })
         packager(opts, function(err, appPath) {
           if (err) {

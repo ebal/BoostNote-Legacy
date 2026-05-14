@@ -9,7 +9,7 @@ on:
 jobs:
   build-linux:
     name: Build Linux app packages in Docker
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
@@ -37,6 +37,7 @@ jobs:
           docker create --name boostnote-x64 boostnote-legacy
           mkdir -p dist
           docker cp boostnote-x64:/app/dist/Boostnote-darwin-x64 ./dist/Boostnote-darwin-x64
+          docker cp boostnote-x64:/app/dist/Boostnote-linux-x64.tar.gz ./dist/Boostnote-linux-x64.tar.gz
           docker rm boostnote-x64
 
       - name: Build Apple Silicon macOS app package in Docker
@@ -85,10 +86,11 @@ jobs:
       - name: Upload app packages as artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: boostnote-macos-packages
+          name: boostnote-packages
           path: |
             dist/Boostnote-darwin-x64
             dist/Boostnote-darwin-arm64
+            dist/Boostnote-linux-x64.tar.gz
 
       - name: Upload DMG artifacts
         uses: actions/upload-artifact@v7

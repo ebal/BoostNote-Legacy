@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Common Changelog](https://common-changelog.org) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.13] - 2026-05-14
+
+### Changed
+
+- Remove broken `appdmg`/`.dmg` macOS publishing artifacts; replace with cross-platform `.zip` archives of `.app` bundles.
+- Remove `create-dmgs` CI job; simplify workflow to single `build-apps` job exporting all artifacts.
+
 ## [0.17.12] - 2026-05-14
 
 ### Added
@@ -233,6 +240,7 @@ The format is based on [Common Changelog](https://common-changelog.org) and this
 
 - Add update menu item with download confirmation dialog ([`85d09b3b`](../../commit/85d09b3b), [`553832bd`](../../commit/553832bd)).
 
+[0.17.13]: ../../compare/v0.17.12...v0.17.13
 [0.17.12]: ../../compare/v0.17.10...v0.17.12
 [0.17.10]: ../../compare/v0.17.9...v0.17.10
 [0.17.9]: ../../compare/v0.17.8...v0.17.9

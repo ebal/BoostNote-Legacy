@@ -7,8 +7,8 @@ on:
       - 'v*'
 
 jobs:
-  build-linux:
-    name: Build Linux app packages in Docker
+  build-apps:
+    name: Build app packages in Docker
     runs-on: ubuntu-24.04
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -37,6 +37,7 @@ jobs:
           docker create --name boostnote-x64 boostnote-legacy
           mkdir -p dist
           docker cp boostnote-x64:/app/dist/Boostnote-darwin-x64 ./dist/Boostnote-darwin-x64
+          docker cp boostnote-x64:/app/dist/Boostnote-darwin-x64.zip ./dist/Boostnote-darwin-x64.zip
           docker cp boostnote-x64:/app/dist/Boostnote-linux-x64.tar.gz ./dist/Boostnote-linux-x64.tar.gz
           docker rm boostnote-x64
 
@@ -46,42 +47,8 @@ jobs:
           docker create --name boostnote-arm64 boostnote-legacy-arm64
           mkdir -p dist
           docker cp boostnote-arm64:/app/dist/Boostnote-darwin-arm64 ./dist/Boostnote-darwin-arm64
+          docker cp boostnote-arm64:/app/dist/Boostnote-darwin-arm64.zip ./dist/Boostnote-darwin-arm64.zip
           docker rm boostnote-arm64
-
-      - name: Install appdmg
-        run: npm install -g appdmg
-
-      - name: Create Intel DMG
-        run: |
-          cat > dist/appdmg-intel.json <<'EOF'
-          {
-            "title": "Boostnote",
-            "icon": "resources/dmg.icns",
-            "background": "resources/boostnote-install.png",
-            "icon-size": 80,
-            "contents": [
-              { "x": 448, "y": 344, "type": "link", "path": "/Applications" },
-              { "x": 192, "y": 344, "type": "file", "path": "dist/Boostnote-darwin-x64/Boostnote.app" }
-            ]
-          }
-          EOF
-          appdmg dist/appdmg-intel.json dist/Boostnote-${VERSION}-darwin-intel.dmg
-
-      - name: Create Apple Silicon DMG
-        run: |
-          cat > dist/appdmg-arm64.json <<'EOF'
-          {
-            "title": "Boostnote",
-            "icon": "resources/dmg.icns",
-            "background": "resources/boostnote-install.png",
-            "icon-size": 80,
-            "contents": [
-              { "x": 448, "y": 344, "type": "link", "path": "/Applications" },
-              { "x": 192, "y": 344, "type": "file", "path": "dist/Boostnote-darwin-arm64/Boostnote.app" }
-            ]
-          }
-          EOF
-          appdmg dist/appdmg-arm64.json dist/Boostnote-${VERSION}-darwin-arm64.dmg
 
       - name: Upload app packages as artifacts
         uses: actions/upload-artifact@v7
@@ -91,11 +58,5 @@ jobs:
             dist/Boostnote-darwin-x64
             dist/Boostnote-darwin-arm64
             dist/Boostnote-linux-x64.tar.gz
-
-      - name: Upload DMG artifacts
-        uses: actions/upload-artifact@v7
-        with:
-          name: boostnote-macos-dmgs
-          path: |
-            dist/Boostnote-${{ env.VERSION }}-darwin-intel.dmg
-            dist/Boostnote-${{ env.VERSION }}-darwin-arm64.dmg
+            dist/Boostnote-darwin-x64.zip
+            dist/Boostnote-darwin-arm64.zip

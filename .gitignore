@@ -9,7 +9,6 @@ node_modules/*
 /secret
 *.log
 .idea
-.vscode
 package-lock.json
 config.json
 autostart.sh

@@ -36,7 +36,7 @@ This is the **legacy** branch of Boostnote — a markdown-first, open-source not
 
 | Version | What changed |
 |---------|-------------|
-| 0.17.13 | Replace broken `.dmg` artifacts with cross-platform `.zip` archives; remove `create-dmgs` CI job |
+| 0.17.14 | Remove snap, docs, FAQ, TASKS, non-en locales, VSCode gitignore, stale code_style refs |
 | 0.17.10 | Cleanup dead config, fix CoffeeScript bug, normalize line endings, fix CI workflow |
 | 0.17.9 | Upgrade Docker to node:22, add macOS DMG build workflow, fix Node 22 test compat |
 | 0.17.8 | Add layout styles for Preferences modal info and snippet tabs |

@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Common Changelog](https://common-changelog.org) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.14] - 2026-05-14
+
+### Removed
+
+- Remove out-of-date `snap/` directory (snapcraft config, desktop entry) — no snap builds maintained.
+- Remove unused `FAQ.md` and `TASKS.md` (former session scratchpad).
+- Remove `docs/` directory — build/debug guides in 8 languages (2-4% old), no code references.
+- Remove 20 non-English locale files — only `en` is registered in `Languages.js`; files were dead.
+- Remove stale `.vscode` entry from `.gitignore` — no `.vscode/` directory exists.
+- Remove stale `docs/code_style.md` references from `contributing.md` and `PULL_REQUEST_TEMPLATE.md`.
+
 ## [0.17.13] - 2026-05-14
 
 ### Changed
@@ -240,6 +251,7 @@ The format is based on [Common Changelog](https://common-changelog.org) and this
 
 - Add update menu item with download confirmation dialog ([`85d09b3b`](../../commit/85d09b3b), [`553832bd`](../../commit/553832bd)).
 
+[0.17.14]: ../../compare/v0.17.13...v0.17.14
 [0.17.13]: ../../compare/v0.17.12...v0.17.13
 [0.17.12]: ../../compare/v0.17.10...v0.17.12
 [0.17.10]: ../../compare/v0.17.9...v0.17.10

@@ -13,7 +13,6 @@ Thank you in advance for your help.
 There is a pull request template for your to follow. Please fill in the template before submitting your code. Your pull request will be reviewed faster if we know exactly what it does.
 
 Make sure that you have:
-- Checked [`code_style.md`](docs/code_style.md) for information on code style
 - Write tests for your code and run test inside Docker
 ```
 docker run --rm boostnote-legacy npm run test

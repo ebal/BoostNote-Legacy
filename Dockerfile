@@ -11,8 +11,10 @@
 #
 # Export:
 #   docker cp $(docker create --rm boostnote-legacy):/app/dist/Boostnote-darwin-x64 ./dist/
+#   docker cp $(docker create --rm boostnote-legacy):/app/dist/Boostnote-darwin-x64.zip ./dist/
 #   docker cp $(docker create --rm boostnote-legacy):/app/dist/Boostnote-linux-x64.tar.gz ./dist/
 #   docker cp $(docker create --rm boostnote-legacy-arm64):/app/dist/Boostnote-darwin-arm64 ./dist/
+#   docker cp $(docker create --rm boostnote-legacy-arm64):/app/dist/Boostnote-darwin-arm64.zip ./dist/
 
 ARG BUILDARCH=amd64
 
@@ -24,6 +26,7 @@ RUN apt-get update && apt-get install -y \
   build-essential \
   fakeroot \
   git \
+  zip \
   && rm -rf /var/lib/apt/lists/*
 
 # ── deps stage: install node_modules and resolve yarn.lock ──────────────────
@@ -62,9 +65,12 @@ RUN npm run compile && \
   cd /build/app && \
   PACK_OUT_DIR=/build/out-linux grunt pack:linux && \
   mkdir -p /app/dist && \
-  tar -czf /app/dist/Boostnote-linux-x64.tar.gz -C /build/out-linux/Boostnote-linux-x64 .
+  tar -czf /app/dist/Boostnote-linux-x64.tar.gz -C /build/out-linux/Boostnote-linux-x64 . && \
+  cd /build/out/Boostnote-darwin-$ARCH_SUFFIX && \
+  zip -r -y -q /app/dist/Boostnote-darwin-$ARCH_SUFFIX.zip Boostnote.app
 
 # Output:
 #   /app/dist/Boostnote-darwin-{x64,arm64}/Boostnote.app
+#   /app/dist/Boostnote-darwin-{x64,arm64}.zip
 #   /app/dist/Boostnote-linux-x64.tar.gz
 CMD ["sh", "-c", "ls -la dist/"]
